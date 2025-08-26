@@ -1,0 +1,24 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "bb3cy0ewmtcgxqw8zdk7-postgresql.services.clever-cloud.com",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Form Herramientas 3",
+      "database": "bb3cy0ewmtcgxqw8zdk7",
+      "username": "uroi4ld1r6fydozbwc6p",
+      "password": "8SDgskWWyTHyCltL4PnXabJ7g4VlT4"
+    },
+    {
+      "previewLimit": 50,
+      "server": "bgitbmbshsa3dvifgtym-postgresql.services.clever-cloud.com",
+      "port": 50013,
+      "driver": "PostgreSQL",
+      "name": "DB - VetInHouse",
+      "database": "bgitbmbshsa3dvifgtym",
+      "username": "uemjcepqdyrdj7p0sepo",
+      "password": "Hu6951pXnmElODqrijDMuatDx97V0P"
+    }
+  ]
+}

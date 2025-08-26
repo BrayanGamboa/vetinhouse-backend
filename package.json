@@ -1,0 +1,57 @@
+{
+  "name": "vetinhouse-backend-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node index.ts",
+    "test": "NODE_ENV=test jest",
+    "coverage": "jest --coverage"
+  },
+  "author": "Jérémy Buget",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@hapi/good": "^9.0.1",
+    "@hapi/good-console": "^9.0.1",
+    "@hapi/good-squeeze": "^6.0.0",
+    "@hapi/hapi": "^21.4.3",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
+    "blipp": "^4.0.2",
+    "dotenv": "^17.2.1",
+    "hapi-swagger": "^17.3.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "pg": "^8.16.3",
+    "request": "^2.88.2",
+    "require-directory": "^2.1.1",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.3",
+    "@types/sequelize": "^6.12.0",
+    "jest": "^30.0.5",
+    "nodemon": "^3.1.10",
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=12",
+    "npm": ">=6.12"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{ts}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/coverage/**"
+    ],
+    "testURL": "http://localhost/"
+  }
+}
