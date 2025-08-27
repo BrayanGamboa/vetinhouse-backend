@@ -42,4 +42,15 @@ CREATE TABLE auth.auth_user(
   CONSTRAINT auth_user_email_uq UNIQUE (email)
 );
 
-SELECT * FROM auth.auth_user;
+SELECT * FROM user;
+
+ALTER TABLE auth.user
+  RENAME TO auth_user;
+
+SELECT table_schema, table_name
+FROM information_schema.tables
+WHERE table_name LIKE '%use%'
+
+SELECT * FROM public.users
+
+DROP TABLE public.users

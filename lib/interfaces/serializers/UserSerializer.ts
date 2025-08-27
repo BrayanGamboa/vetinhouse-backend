@@ -4,10 +4,14 @@ import User from "../../domain/user/User";
 
 const _serializeSingleUser = (user: User) => {
   return {
-    'id': user.id,
+    'document': user.document,
     'name': user.name,
     'last-name': user.lastName,
     'email': user.email,
+    'password': user.password,
+    'document-type-id': user.documentTypeId,
+    'role-id': user.roleId,
+    'info': user.info
   };
 };
 

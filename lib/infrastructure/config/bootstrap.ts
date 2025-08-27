@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import constants from './constants';
+import * as constants from './constants';
 import environment from './environment';
 import sequelize from '../orm/sequelize/sequelize';
 

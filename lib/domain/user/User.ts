@@ -1,21 +1,30 @@
 export default class User {
-  id: string | null;
+  document: string | null;
   name: string;
   lastName: string;
   email: string;
   password: string;
+  documentTypeId: number;
+  roleId: number;
+  info: JSON;
 
   constructor(
-    id: string | null = null,
+    document: string | null = null,
     name: string,
     lastName: string,
     email: string,
-    password: string
+    password: string,
+    documentTypeId: number,
+    roleId: number,
+    info: JSON,
   ) {
-    this.id = id;
+    this.document = document;
     this.name = name;
     this.lastName = lastName;
     this.email = email;
     this.password = password;
+    this.documentTypeId = documentTypeId;
+    this.roleId = roleId;
+    this.info = info;
   }
 };

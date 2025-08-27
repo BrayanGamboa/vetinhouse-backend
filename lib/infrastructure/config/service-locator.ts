@@ -1,10 +1,13 @@
 // lib/infrastructure/config/service-locator.ts
-import constants from './constants';
+import * as constants from './constants';
 import environment from './environment';
 import JwtAccessTokenManager from '../security/JwtAccessTokenManager';
 import UserSerializer from '../../interfaces/serializers/UserSerializer';
+
+// Import estáticos para repositorios
+// import AuthUserRepositoryMongo from '../repositories/UserRepositoryMongo';
+import AuthUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_repository_postgres';
 // import UserRepositoryInMemory from '../repositories/UserRepositoryInMemory';
-// import UserRepositoryMongo from '../repositories/UserRepositoryMongo';
 // import UserRepositorySQLite from '../repositories/UserRepositorySQLite';
 
 export interface ServiceLocator {
@@ -20,11 +23,14 @@ export function buildBeans(): ServiceLocator {
     userRepository: {} as any
   };
 
-  switch (environment.dialect) {
-      case constants.SUPPORTED_DATABASE.POSTGRES:
-      throw new Error('Add PostgreSQL support');
-    default:
-      throw new Error(`Unsupported dialect: ${environment.dialect}`);
+  // Selección del repositorio según dialecto
+  if (environment.dialect === constants.SUPPORTED_DATABASE.MONGO) {
+    // beans.userRepository = new AuthUserRepositoryMongo();
+  } else if (environment.dialect === constants.SUPPORTED_DATABASE.POSTGRES) {
+    beans.userRepository = new AuthUserRepositoryPostgres();
+  } else {
+    throw new Error(`Unsupported dialect: ${environment.dialect}`);
   }
+
   return beans;
 }

@@ -1,4 +1,4 @@
-import constants from './constants';
+import * as constants from './constants';
 import dotenv from "dotenv";
 dotenv.config();
 
