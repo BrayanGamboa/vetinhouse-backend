@@ -2,7 +2,7 @@ import User from "./User";
 
 export default class {
 
-  persist(domainUser: User) {
+  persist(domainUser: User): Promise<User> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 

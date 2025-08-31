@@ -1,4 +1,4 @@
-import UserRepository from '../../domain/user/UserRepository';
+import UserRepository from '../../../../domain/auth/user/UserRepository';
 
 export default (userId: string, { userRepository }: { userRepository: UserRepository}) => {
   return userRepository.remove(userId);

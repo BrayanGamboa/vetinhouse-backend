@@ -54,3 +54,8 @@ WHERE table_name LIKE '%use%'
 SELECT * FROM public.users
 
 DROP TABLE public.users
+
+
+
+
+SELECT * FROM mix.mix_role;

@@ -1,8 +1,8 @@
-import User from "../../../../domain/user/User";
-import UserRepository from "../../../../domain/user/UserRepository";
+import User from "../../../../domain/auth/user/User";
+import UserRepository from "../../../../domain/auth/user/UserRepository";
 import models from "../../../orm/sequelize/models/relational_models";
 const { auth_user } = models;
-import {convertCamelToSnakeCase} from '../../../../application/utilities/general_functions'
+import { convertCamelToSnakeCase } from '../../../../application/utilities/general_functions'
 
 
 export default class extends UserRepository {

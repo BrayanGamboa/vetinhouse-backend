@@ -1,38 +1,38 @@
 import Boom from '@hapi/boom';
-import ListUsers from '../../application/use_cases/ListUsers';
-import CreateUser from '../../application/use_cases/CreateUser';
-import GetUser from '../../application/use_cases/GetUser';
-import DeleteUser from '../../application/use_cases/DeleteUser';
+import ListRoleUsers from '../../../../application/use_cases/auth/role_user/ListRoleUsers';
+import CreateRoleUser from '../../../../application/use_cases/auth/role_user/CreateRoleUser';
+import GetUser from '../../../../application/use_cases/auth/role_user/GetRoleUser';
+import DeleteUser from '../../../../application/use_cases/auth/role_user/DeleteRoleUser';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export default {
 
-  // async createUser(request: Request) {
+  async createRoleUser(request: Request) {
 
-  //   // Context
-  //   const serviceLocator = request.server.app.serviceLocator;
+    // Context
+    const serviceLocator = request.server.app.serviceLocator;
 
-  //   // Input
-  //   const { name, lastName, email, password } = request.payload as { name: string; lastName: string; email: string; password: string };
+    // Input
+    const { id, name, description} = request.payload as { id: number, name: string; description: string};
 
-  //   // Treatment
-  //   const user = await CreateUser(name, lastName, email, password, serviceLocator);
+    // Treatment
+    const roleUser = await CreateRoleUser(id, name, description, serviceLocator);
 
-  //   // Output
-  //   return serviceLocator.userSerializer.serialize(user);
-  // },
+    // Output
+    return serviceLocator.roleUserSerializer.serialize(roleUser);
+  },
 
-  async findUsers(request: Request) {
+  async findRoleUsers(request: Request) {
 
     // Context
     const serviceLocator = request.server.app.serviceLocator;
 
     // Treatment
-    const users = await ListUsers(serviceLocator);
+    const rolesUser = await ListRoleUsers(serviceLocator);
 
     // Output
-    return users.map(serviceLocator.userSerializer.serialize)
+    return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
   },
 
   // async getUser(request: Request) {

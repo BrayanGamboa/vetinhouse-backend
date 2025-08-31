@@ -13,14 +13,10 @@ declare module '@hapi/hapi' {
   }
 }
 
-import hello from '../../interfaces/routes/hello';
-
-
 const createServer = async () => {
   const server = Hapi.server({
     port: process.env.PORT || 3000
   });
-
   await server.register([
     Blipp,
     Inert,
@@ -35,27 +31,28 @@ const createServer = async () => {
       }
     },
     {
-      plugin: Good,
+      plugin: require('hapi-pino'),
       options: {
-        ops: { interval: 1000 * 60 },
-        reporters: {
-          myConsoleReporter: [
-            {
-              module: '@hapi/good-squeeze',
-              name: 'Squeeze',
-              args: [{ ops: '*', log: '*', error: '*', response: '*' }]
-            },
-            { module: '@hapi/good-console' },
-            'stdout'
-          ]
-        }
-      },
+        transport: process.env.NODE_ENV !== 'production'
+          ? {
+            target: 'pino-pretty',
+            options: {
+              colorize: true
+            }
+          }
+          : undefined,
+        logEvents: ['response', 'onPostStart', 'onPostStop'],
+        logRequestComplete: true,
+        // mergeHapiLogData: false, 
+        ignorePaths: ['/swagger.json', '/swaggerui/*']
+      }
     },
   ]);
 
   await server.register([
     require('../../interfaces/routes/hello').default,
-    require('../../interfaces/routes/users').default,
+    require('../../interfaces/routes/auth/user').default,
+    require('../../interfaces/routes/auth/role_user').default,
   ]);
 
   server.app.serviceLocator = buildBeans();

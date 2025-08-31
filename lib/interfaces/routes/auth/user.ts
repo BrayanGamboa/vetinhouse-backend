@@ -1,34 +1,35 @@
 import { Server } from '@hapi/hapi';
-import UsersController from '../controllers/UsersController'; 
+import UsersController from '../../controllers/auth/user/UsersController';
 
+const pathBase = '/user';
 
 export default {
-  name: 'users',
+  name: 'Users',
   version: '1.0.0',
   register: async (server: Server) => {
 
     server.route([
+      // {
+      //   method: 'GET',
+      //   path: '/users',
+      //   handler: UsersController.findUsers,
+      //   options: {
+      //     description: 'List all users',
+      //     tags: ['api'],
+      //   },
+      // },
       {
-        method: 'GET',
-        path: '/users',
-        handler: UsersController.findUsers,
+        method: 'POST',
+        path: `${pathBase}`,
+        handler: UsersController.createUser,
         options: {
-          description: 'List all users',
+          description: 'Create a user',
           tags: ['api'],
         },
       },
       // {
-      //   method: 'POST',
-      //   path: '/users',
-      //   handler: UsersController.createUser,
-      //   options: {
-      //     description: 'Create a user',
-      //     tags: ['api'],
-      //   },
-      // },
-      // {
       //   method: 'GET',
-      //   path: '/users/{id}',
+      //   path: `${pathBase}/{id}`,
       //   handler: UsersController.getUser,
       //   options: {
       //     description: 'Get a user by its {id}',
@@ -37,7 +38,7 @@ export default {
       // },
       // {
       //   method: 'DELETE',
-      //   path: '/users/{id}',
+      //   path: `${pathBase}/{id}`,
       //   handler: UsersController.deleteUser,
       //   options: {
       //     description: 'Delete a user',

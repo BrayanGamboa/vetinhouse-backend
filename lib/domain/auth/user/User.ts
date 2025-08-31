@@ -1,3 +1,5 @@
+import { InfoResponse } from '../../../application/utilities/general_functions';
+
 export default class User {
   document: string | null;
   name: string;
@@ -6,7 +8,7 @@ export default class User {
   password: string;
   documentTypeId: number;
   roleId: number;
-  info: JSON;
+  info: InfoResponse;
 
   constructor(
     document: string | null = null,
@@ -16,7 +18,7 @@ export default class User {
     password: string,
     documentTypeId: number,
     roleId: number,
-    info: JSON,
+    info: { createdAt: string; updatedAt: string },
   ) {
     this.document = document;
     this.name = name;

@@ -1,5 +1,6 @@
-import UserRepository from "../../domain/user/UserRepository";
-import User from "../../domain/user/User";
+import User from "../../../../domain/auth/user/User";
+import UserRepository from '../../../../domain/auth/user/UserRepository';
+
 
 export default ({ userRepository }: { userRepository: UserRepository }): Promise<User[]> => {
   return userRepository.find();

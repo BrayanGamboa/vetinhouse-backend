@@ -1,6 +1,6 @@
 'use strict';
 
-import User from "../../domain/user/User";
+import User from "../../../domain/auth/user/User";
 
 const _serializeSingleUser = (user: User) => {
   return {

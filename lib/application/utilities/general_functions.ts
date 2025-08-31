@@ -55,3 +55,9 @@ export const generateCurrentDate = (): string => {
 export const convertUpperCase = (text: string): string => {
   return text.toUpperCase();
 };
+
+
+export interface InfoResponse {
+  createdAt: string;
+  updatedAt: string;
+}
