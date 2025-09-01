@@ -13,8 +13,8 @@ export default async (
   }
 
   const roleUser = new RoleUser(id, name, description, {
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   });
-  return roleUserRepository.persist(roleUser);
+  return await roleUserRepository.persist(roleUser);
 };

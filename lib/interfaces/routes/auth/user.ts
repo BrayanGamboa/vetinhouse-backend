@@ -1,5 +1,6 @@
 import { Server } from '@hapi/hapi';
 import UsersController from '../../controllers/auth/user/UsersController';
+import { UserPayloadSchema, UserResponseSchema, UserListResponseSchema } from '../../../application/schemas/auth/UserSchema';
 
 const pathBase = '/user';
 
@@ -9,33 +10,39 @@ export default {
   register: async (server: Server) => {
 
     server.route([
-      // {
-      //   method: 'GET',
-      //   path: '/users',
-      //   handler: UsersController.findUsers,
-      //   options: {
-      //     description: 'List all users',
-      //     tags: ['api'],
-      //   },
-      // },
+      {
+        method: 'GET',
+        path: pathBase,
+        handler: UsersController.findUsers,
+        options: {
+          description: 'List all users',
+          tags: ['api'],
+        },
+      },
       {
         method: 'POST',
-        path: `${pathBase}`,
+        path: pathBase,
         handler: UsersController.createUser,
         options: {
           description: 'Create a user',
           tags: ['api'],
+          validate: {
+            payload: UserPayloadSchema
+          },
+          response: {
+            schema: UserResponseSchema
+          }
         },
       },
-      // {
-      //   method: 'GET',
-      //   path: `${pathBase}/{id}`,
-      //   handler: UsersController.getUser,
-      //   options: {
-      //     description: 'Get a user by its {id}',
-      //     tags: ['api'],
-      //   },
-      // },
+      {
+        method: 'GET',
+        path: `${pathBase}/{id}`,
+        handler: UsersController.getUserById,
+        options: {
+          description: 'Get a user by its {id}',
+          tags: ['api'],
+        },
+      },
       // {
       //   method: 'DELETE',
       //   path: `${pathBase}/{id}`,

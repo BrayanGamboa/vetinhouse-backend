@@ -5,7 +5,10 @@ const _serializeSingleRoleUser = (documentType: DocumentType) => {
     'id': documentType.id,
     'name': documentType.name,
     'description': documentType.description,
-    'info': documentType.info
+    'info': {
+      createdAt: documentType.info?.created_at,
+      updatedAt: documentType.info?.updated_at
+    }
   };
 };
 
