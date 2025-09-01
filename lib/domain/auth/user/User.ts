@@ -8,25 +8,36 @@ export default class User {
   password: string;
   documentTypeId: number;
   roleId: number;
-  info: InfoResponse;
+  info: InfoResponse | null;
 
+  constructor();
   constructor(
-    document: string | null = null,
+    document: string,
     name: string,
     lastName: string,
     email: string,
     password: string,
     documentTypeId: number,
     roleId: number,
-    info: { createdAt: string; updatedAt: string },
+    info: InfoResponse,
+  );
+  constructor(
+    document?: string,
+    name?: string,
+    lastName?: string,
+    email?: string,
+    password?: string,
+    documentTypeId?: number,
+    roleId?: number,
+    info?: InfoResponse,
   ) {
-    this.document = document;
-    this.name = name;
-    this.lastName = lastName;
-    this.email = email;
-    this.password = password;
-    this.documentTypeId = documentTypeId;
-    this.roleId = roleId;
-    this.info = info;
+    this.document = document ?? null;
+    this.name = name ?? '';
+    this.lastName = lastName ?? '';
+    this.email = email ?? '';
+    this.password = password ?? '';
+    this.documentTypeId = documentTypeId ?? 0;
+    this.roleId = roleId ?? 0;
+    this.info = info ?? null;
   }
 };

@@ -8,20 +8,28 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export default {
 
-  async createUser(request: Request) {
-
-    // Context
+  async createUser(request: Request, h: ResponseToolkit) {
     const serviceLocator = request.server.app.serviceLocator;
 
-    // Input
-    const { document, name, lastName, email, password, roleId, documentTypeId } = request.payload as { document: string, name: string; lastName: string; email: string; password: string, roleId: number, documentTypeId: number };
+    try {
+      const { document, name, lastName, email, password, roleId, documentTypeId } = request.payload as any;
 
-    // Treatment
-    const user = await CreateUser(document, name, lastName, email, password, roleId, documentTypeId, serviceLocator);
+      const user = await CreateUser(document, name, lastName, email, password, roleId, documentTypeId, serviceLocator);
 
-    // Output
-    return serviceLocator.userSerializer.serialize(user);
-  },
+      return serviceLocator.userSerializer.serialize(user);
+    } catch (error) {
+      console.log({ error });
+      
+      if (Boom.isBoom(error)) {
+        return h.response(error.output.payload).code(error.output.statusCode);
+      }
+
+      // 👇 no tapes el error, usa el genérico solo si de verdad no es Boom
+      return Boom.badImplementation("Unexpected error");
+    }
+  }
+
+}
 
   // async findUsers(request: Request) {
 
@@ -68,4 +76,3 @@ export default {
   //   return h.response().code(204);
   // },
 
-};

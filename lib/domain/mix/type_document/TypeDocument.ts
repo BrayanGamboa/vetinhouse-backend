@@ -1,6 +1,6 @@
 import { InfoResponse } from '../../../application/utilities/general_functions';
 
-export default class RoleUser {
+export default class TypeDocument {
   id: number;
   name: string;
   description: string;

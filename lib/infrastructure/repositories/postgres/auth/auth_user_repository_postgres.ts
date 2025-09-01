@@ -2,8 +2,8 @@ import User from "../../../../domain/auth/user/User";
 import UserRepository from "../../../../domain/auth/user/UserRepository";
 import models from "../../../orm/sequelize/models/relational_models";
 const { auth_user } = models;
-import { convertCamelToSnakeCase } from '../../../../application/utilities/general_functions'
-
+import { convertCamelToSnakeCase } from '../../../../application/utilities/general_functions';
+import Boom from '@hapi/boom';
 
 export default class extends UserRepository {
   async persist(domain_user: User) {
@@ -34,9 +34,33 @@ export default class extends UserRepository {
       );
     } catch (err) {
       console.error(err);
-      throw new Error('Error creating user');
+      throw Boom.badImplementation('Error creating user');
     }
   }
 
+  async getByFilter(filter: any): Promise<User> {
+    const snakeFilter = convertCamelToSnakeCase(filter);
+
+    // 👇 Sequelize espera un objeto "where", no el string directo
+    const seqUser = await auth_user.findOne({
+      where: snakeFilter,
+    });
+
+    let user = new User();
+    if (seqUser != null) {
+      user = new User(
+        seqUser.document,
+        seqUser.name,
+        seqUser.lastName,
+        seqUser.email,
+        seqUser.password,
+        seqUser.document_type_id,
+        seqUser.role_id,
+        seqUser.info
+      );
+    }
+    return user;
+
+  }
 
 }

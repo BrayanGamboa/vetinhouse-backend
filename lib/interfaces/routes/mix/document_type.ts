@@ -1,10 +1,10 @@
 import { Server } from '@hapi/hapi';
-import RoleUsersController from '../../controllers/auth/role_user/RoleUsersController';
+import DocumentTypeController from '../../controllers/mix/DocumentTypeController';
 
-const pathBase = '/role_user';
+const pathBase = '/document_type';
 
 export default {
-  name: 'Role user',
+  name: 'Document type',
   version: '1.0.0',
   register: async (server: Server) => {
 
@@ -12,34 +12,34 @@ export default {
       {
         method: 'GET',
         path: pathBase,
-        handler: RoleUsersController.findRoleUsers,
+        handler: DocumentTypeController.findDocumentTypes,
         options: {
-          description: 'List all users',
+          description: 'List all document types',
           tags: ['api'],
         },
       },
       {
         method: 'POST',
         path: pathBase,
-        handler: RoleUsersController.createRoleUser,
+        handler: DocumentTypeController.createDocumentType,
         options: {
-          description: 'Create a role user',
+          description: 'Create a document type',
           tags: ['api'],
         },
       },
       {
         method: 'GET',
         path: `${pathBase}/{id}`,
-        handler: RoleUsersController.getRoleUser,
+        handler: DocumentTypeController.getDocumentType,
         options: {
-          description: 'Get a role user by id',
+          description: 'Get a document type by id',
           tags: ['api'],
         },
       },
       // {
       //   method: 'DELETE',
       //   path: `${pathBase}/{id}`,
-      //   handler: UsersController.deleteUser,
+      //   handler: DocumentTypeController.deleteUser,
       //   options: {
       //     description: 'Delete a user',
       //     tags: ['api'],

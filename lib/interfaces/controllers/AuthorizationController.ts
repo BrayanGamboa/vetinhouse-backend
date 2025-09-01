@@ -1,20 +1,17 @@
-'use strict';
-
-const Boom = require('@hapi/boom');
-const GetAccessToken = require('../../application/use_cases/GetAccessToken');
-const VerifyAccessToken = require('../../application/use_cases/VerifyAccessToken');
+import Boom from '@hapi/boom';
+import { Request, ResponseToolkit } from "@hapi/hapi";
+import GetAccessToken from '../../application/use_cases/GetAccessToken';
+import VerifyAccessToken from '../../application/use_cases/VerifyAccessToken';
 
 export default {
 
-  async getAccessToken(request) {
+  async getAccessToken(request: Request) {
 
     // Context
     const serviceLocator = request.server.app.serviceLocator;
 
     // Input
-    const grantType = request.payload['grant_type'];
-    const email = request.payload['username'];
-    const password = request.payload['password'];
+    const { grant_type: grantType, username: email, password } = request.payload as { grant_type: string, username: string; password: string};
 
     if (!grantType || grantType !== 'password') {
       return Boom.badRequest('Invalid authentication strategy');
@@ -31,7 +28,7 @@ export default {
     }
   },
 
-  verifyAccessToken(request, h) {
+  verifyAccessToken(request: Request, h: ResponseToolkit) {
 
     // Context
     const serviceLocator = request.server.app.serviceLocator;

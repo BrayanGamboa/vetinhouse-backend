@@ -53,6 +53,7 @@ const createServer = async () => {
     require('../../interfaces/routes/hello').default,
     require('../../interfaces/routes/auth/user').default,
     require('../../interfaces/routes/auth/role_user').default,
+    require('../../interfaces/routes/mix/document_type').default,
   ]);
 
   server.app.serviceLocator = buildBeans();
