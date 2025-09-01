@@ -1,11 +1,17 @@
 import RoleUser from '../../../../domain/auth/role_user/RoleUser';
 import RoleUserRepository from '../../../../domain/auth/role_user/RoleUserRepository';
-export default (
+
+export default async (
   id: number,
   name: string,
   description: string,
   { roleUserRepository }: { roleUserRepository: RoleUserRepository }
 ) => {
+
+  if(((await roleUserRepository.get(id)).info) != null) {
+    return 403;
+  }
+
   const roleUser = new RoleUser(id, name, description, {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

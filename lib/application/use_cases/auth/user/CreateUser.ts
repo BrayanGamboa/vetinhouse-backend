@@ -1,6 +1,10 @@
 import User from '../../../../domain/auth/user/User';
 import UserRepository from '../../../../domain/auth/user/UserRepository';
-export default (
+import DocumentTypeRepository from '../../../../domain/mix/type_document/TypeDocumentRepository';
+import RoleUserRepository from '../../../../domain/auth/role_user/RoleUserRepository';
+import Boom from '@hapi/boom';
+
+export default async (
   document: string,
   name: string,
   lastName: string,
@@ -8,11 +12,26 @@ export default (
   password: string,
   roleId: number,
   documentTypeId: number,
-  { userRepository }: { userRepository: UserRepository }
+  { userRepository, documentTypeRepository, roleUserRepository }: { userRepository: UserRepository, documentTypeRepository: DocumentTypeRepository, roleUserRepository: RoleUserRepository }
 ) => {
   const user = new User(document, name, lastName, email, password, documentTypeId, roleId, {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
+
+  if (((await userRepository.getByFilter({document})).info) != null) {
+    throw Boom.forbidden("User already exists");
+  }
+
+  if (((await userRepository.getByFilter({email})).info) != null) {
+    throw Boom.forbidden("Email already exists");
+  }
+
+  if (((await documentTypeRepository.get(documentTypeId)).info) == null)
+    throw Boom.notFound('Document type not found');
+
+  if (((await roleUserRepository.get(roleId)).info) == null)
+    throw Boom.notFound("Role user not found");
+
   return userRepository.persist(user);
 };

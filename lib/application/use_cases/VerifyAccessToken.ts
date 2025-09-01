@@ -5,5 +5,5 @@ export default (accessToken: string, { accessTokenManager }: { accessTokenManage
   if (!decoded) {
     throw new Error('Invalid access token');
   }
-  return { uid: decoded.uid };
+  return { uid: decoded.finally };
 };

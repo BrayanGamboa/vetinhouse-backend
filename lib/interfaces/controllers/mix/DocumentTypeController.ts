@@ -1,14 +1,14 @@
 import Boom from '@hapi/boom';
-import ListRoleUsers from '../../../../application/use_cases/auth/role_user/ListRoleUsers';
-import CreateRoleUser from '../../../../application/use_cases/auth/role_user/CreateRoleUser';
-import GetRoleUser from '../../../../application/use_cases/auth/role_user/GetRoleUser';
-import DeleteUser from '../../../../application/use_cases/auth/role_user/DeleteRoleUser';
+import ListDocumentType from '../../../application/use_cases/mix/type_document/ListTypeDocument';
+import CreateDocumentType from '../../../application/use_cases/mix/type_document/CreateTypeDocument';
+import GetDocumentType from '../../../application/use_cases/mix/type_document/GetTypeDocument';
+import DeleteUser from '../../../application/use_cases/mix/type_document/DeleteTypeDocument';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export default {
 
-  async createRoleUser(request: Request) {
+  async createDocumentType(request: Request) {
 
     // Context
     const serviceLocator = request.server.app.serviceLocator;
@@ -17,25 +17,25 @@ export default {
     const { id, name, description } = request.payload as { id: number, name: string; description: string };
 
     // Treatment
-    const roleUser = await CreateRoleUser(id, name, description, serviceLocator);
-    if (roleUser === 403) {
-      throw Boom.forbidden('Role user with this ID already exists');
+    const documentType = await CreateDocumentType(id, name, description, serviceLocator);
+    if (documentType === 403) {
+      throw Boom.forbidden('Document type with this ID already exists');
     }
     // Output
-    return serviceLocator.roleUserSerializer.serialize(roleUser);
+    return serviceLocator.roleUserSerializer.serialize(documentType);
   },
 
-  async findRoleUsers(request: Request) {
+  async findDocumentTypes(request: Request) {
     const serviceLocator = request.server.app.serviceLocator;
 
     // Treatment
-    const rolesUser = await ListRoleUsers(serviceLocator);
+    const rolesUser = await ListDocumentType(serviceLocator);
 
     // Output
     return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
   },
 
-  async getRoleUser(request: Request) {
+  async getDocumentType(request: Request) {
 
     // Context
     const serviceLocator = request.server.app.serviceLocator;
@@ -44,11 +44,11 @@ export default {
     const roleUserId = request.params.id;
 
     // Treatment
-    const user = await GetRoleUser(roleUserId, serviceLocator);
+    const user = await GetDocumentType(roleUserId, serviceLocator);
 
     // Output
     if (user.info == null) {
-      throw Boom.notFound('Role user not found');
+      throw Boom.notFound('Document type not found');
     }
     return serviceLocator.roleUserSerializer.serialize(user);
   },

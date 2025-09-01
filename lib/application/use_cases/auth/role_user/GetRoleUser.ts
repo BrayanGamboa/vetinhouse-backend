@@ -1,6 +1,6 @@
-import User from "../../domain/user/User";
-import UserRepository from "../../domain/user/UserRepository";
+import RoleUser from "../../../../domain/auth/role_user/RoleUser";
+import RoleUserRepository from "../../../../domain/auth/role_user/RoleUserRepository";
 
-export default (userId: string, { userRepository }: { userRepository: UserRepository}): Promise<User> => {
-  return userRepository.get(userId);
+export default async (id: number, { roleUserRepository }: { roleUserRepository: RoleUserRepository }): Promise<RoleUser> => {
+  return await roleUserRepository.get(id);
 };

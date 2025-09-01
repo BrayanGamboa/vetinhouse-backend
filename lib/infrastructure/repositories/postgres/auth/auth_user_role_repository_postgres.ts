@@ -28,4 +28,59 @@ export default class extends RoleUserRepository {
       throw new Error('Error creating user');
     }
   }
+  async find(): Promise<RoleUser[]> {
+    try {
+      const seqRoleUsers = await mix_role.findAll();
+      return seqRoleUsers.map((seqRoleUser: any) => new RoleUser(
+        seqRoleUser.id,
+        seqRoleUser.name,
+        seqRoleUser.description,
+        seqRoleUser.info
+      ));
+    } catch (err) {
+      console.error(err);
+      throw new Error('Error fetching role users');
+    } 
+  }
+  async get(roleUserId: number): Promise<RoleUser> {
+    try {
+      const seqRoleUser = await mix_role.findByPk(roleUserId);
+      
+      let roleUser = new RoleUser();
+
+      if (seqRoleUser != null) {
+        roleUser = new RoleUser(
+          seqRoleUser.id,
+          seqRoleUser.name,
+          seqRoleUser.description,
+          seqRoleUser.info
+        );
+      }
+
+      return roleUser;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Error fetching role user');
+    }
+  }
+
+  async remove(roleUserId: number): Promise<RoleUser> {
+    try {
+      const seqRoleUser = await mix_role.findByPk(roleUserId);
+      if (seqRoleUser == null) {
+        throw new Error('Role user not found');
+      }
+      await seqRoleUser.destroy();
+      return new RoleUser(
+        seqRoleUser.id,
+        seqRoleUser.name,
+        seqRoleUser.description,
+        seqRoleUser.info
+      );
+    } catch (err) {
+      console.error(err);
+      throw new Error('Error deleting role user');
+    }
+  }
+
 }
