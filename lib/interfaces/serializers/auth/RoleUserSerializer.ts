@@ -7,7 +7,10 @@ const _serializeSingleRoleUser = (roleUser: RoleUser) => {
     'id': roleUser.id,
     'name': roleUser.name,
     'description': roleUser.description,
-    'info': roleUser.info
+    'info': {
+      createdAt: roleUser.info?.created_at,
+      updatedAt: roleUser.info?.updated_at
+    }
   };
 };
 

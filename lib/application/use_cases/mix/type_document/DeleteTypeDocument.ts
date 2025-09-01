@@ -1,5 +1,5 @@
 import UserRepository from '../../../../domain/auth/user/UserRepository';
 
-export default (userId: string, { userRepository }: { userRepository: UserRepository}) => {
-  return userRepository.remove(userId);
+export default async (userId: string, { userRepository }: { userRepository: UserRepository}) => {
+  return await userRepository.remove(userId);
 };

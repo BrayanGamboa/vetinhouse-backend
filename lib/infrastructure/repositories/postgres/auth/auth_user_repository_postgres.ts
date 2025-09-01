@@ -63,4 +63,23 @@ export default class extends UserRepository {
 
   }
 
+  async find(): Promise<User[]> {
+    try {
+      const seqUser = await auth_user.findAll();
+      return seqUser.map((seqUser: any) => new User(
+        seqUser.document,
+        seqUser.name,
+        seqUser.lastName,
+        seqUser.email,
+        seqUser.password,
+        seqUser.documentType,
+        seqUser.roleId,
+        seqUser.info
+      ))
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error fetching users');
+    }
+  }
+
 }

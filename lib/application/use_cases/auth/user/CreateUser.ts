@@ -15,8 +15,8 @@ export default async (
   { userRepository, documentTypeRepository, roleUserRepository }: { userRepository: UserRepository, documentTypeRepository: DocumentTypeRepository, roleUserRepository: RoleUserRepository }
 ) => {
   const user = new User(document, name, lastName, email, password, documentTypeId, roleId, {
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   });
 
   if (((await userRepository.getByFilter({document})).info) != null) {
@@ -33,5 +33,5 @@ export default async (
   if (((await roleUserRepository.get(roleId)).info) == null)
     throw Boom.notFound("Role user not found");
 
-  return userRepository.persist(user);
+  return await userRepository.persist(user);
 };

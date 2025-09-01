@@ -2,18 +2,22 @@
 
 import User from "../../../domain/auth/user/User";
 
-const _serializeSingleUser = (user: User) => {
+const _serializeSingleUser = (user: any) => {
   return {
-    'document': user.document,
-    'name': user.name,
-    'last-name': user.lastName,
-    'email': user.email,
-    'password': user.password,
-    'document-type-id': user.documentTypeId,
-    'role-id': user.roleId,
-    'info': user.info
+    document: user.document,
+    name: user.name,
+    lastName: user.lastName,
+    email: user.email,
+    password: user.password,
+    documentTypeId: user.documentTypeId,
+    roleId: user.roleId,
+    info: {
+      createdAt: user.info?.created_at,
+      updatedAt: user.info?.updated_at,
+    }
   };
 };
+
 
 export default class {
 

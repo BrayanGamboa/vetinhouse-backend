@@ -13,8 +13,8 @@ export default async (
   }
 
   const typeDocument = new TypeDocument(id, name, description, {
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   });
-  return documentTypeRepository.persist(typeDocument);
+  return await documentTypeRepository.persist(typeDocument);
 };

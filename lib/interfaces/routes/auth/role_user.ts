@@ -1,5 +1,6 @@
 import { Server } from '@hapi/hapi';
 import RoleUsersController from '../../controllers/auth/role_user/RoleUsersController';
+import { RoleUserPayloadSchema, RoleUserListResponseSchema, RoleUserResponseSchema } from '../../../application/schemas/auth/RoleUser';
 
 const pathBase = '/role_user';
 
@@ -16,6 +17,9 @@ export default {
         options: {
           description: 'List all users',
           tags: ['api'],
+          response: {
+            schema: RoleUserListResponseSchema
+          }
         },
       },
       {
@@ -25,6 +29,12 @@ export default {
         options: {
           description: 'Create a role user',
           tags: ['api'],
+          validate: {
+            payload: RoleUserPayloadSchema
+          },
+          response: {
+            schema: RoleUserResponseSchema
+          }
         },
       },
       {
@@ -34,6 +44,9 @@ export default {
         options: {
           description: 'Get a role user by id',
           tags: ['api'],
+          response: {
+            schema: RoleUserResponseSchema
+          }
         },
       },
       // {
