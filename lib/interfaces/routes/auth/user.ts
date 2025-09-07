@@ -73,7 +73,27 @@ export default {
             })
           },
         },
-      },      
+      },
+      {
+        method: 'POST',
+        path: `${pathBase}/login`,
+        handler: UsersController.login,
+        options: {
+          description: 'Login a user',
+          tags: ['api'],
+          // response:{
+          //   status: {
+          //     204: UserResponseSchema
+          //   }
+          // },
+          validate: {
+            payload: Joi.object({
+              email: Joi.string().email().required().example("test@gmail.com"),
+              password: Joi.string().required().example('password123')
+            })
+          }
+        },
+      },
     ]);
   }
 };

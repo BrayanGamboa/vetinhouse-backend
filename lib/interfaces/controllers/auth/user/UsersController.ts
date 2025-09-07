@@ -3,6 +3,7 @@ import ListUsers from '../../../../application/use_cases/auth/user/ListUsers';
 import CreateUser from '../../../../application/use_cases/auth/user/CreateUser';
 import GetUser from '../../../../application/use_cases/auth/user/GetUser';
 import DeleteUser from '../../../../application/use_cases/auth/user/DeleteUser';
+import LoginUser from '../../../../application/use_cases/auth/user/LoginUser';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
 
@@ -99,4 +100,28 @@ export default {
       throw Boom.badImplementation("Unexpected error - deleteUser");
     }
   },
+
+  async login(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
+
+      // Input
+      const { email, password } = request.payload as any;
+
+      // Treatment
+      const user = await LoginUser(email, password, serviceLocator);
+
+      // Output
+      return h.response().code(user ? 200 : 401).takeover();
+
+    } catch (err) {
+      console.error(err);
+
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+
+      throw Boom.badImplementation("Unexpected error - login");
+    }
+  }
 }
