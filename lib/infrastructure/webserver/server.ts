@@ -28,12 +28,12 @@ const createServer = async () => {
           title: 'API Documentation',
           version: Package.version,
         },
-      },
-       tags: [
-        { name: 'Document type', description: 'Operations about document types' },
-        { name: 'Role user', description: 'Operations about user roles' },
-        { name: 'Users', description: 'Authentication endpoints' },
-      ]
+        // tags: [
+        //   { name: 'Document type', description: 'Operations about document types' },
+        //   { name: 'Role user', description: 'Operations about user roles' },
+        //   { name: 'Users', description: 'Authentication endpoints' },
+        // ]
+      }
     },
     {
       plugin: require('hapi-pino'),

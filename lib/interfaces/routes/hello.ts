@@ -1,5 +1,6 @@
 import { Server } from "@hapi/hapi";
 import HelloController from "../controllers/HelloController";
+import Joi from "joi";
 
 export default {
   name: 'hello',
@@ -22,6 +23,11 @@ export default {
         options: {
           description: 'Return "Hello {name}!"',
           tags: ['api'],
+          validate: {
+            params: Joi.object({
+              name: Joi.string().required().description('Name to say hello to')
+            })
+          },
         },
       }
     ]);

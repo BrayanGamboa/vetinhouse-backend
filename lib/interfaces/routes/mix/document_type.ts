@@ -17,11 +17,10 @@ export default {
         handler: DocumentTypeController.findDocumentTypes,
         options: {
           description: 'List all document types',
-          tags: ['api'],
-          response: {
-            schema: DocumentTypeListResponseSchema
-          }
-
+          tags: ['Document type', 'api'],
+          // response: {
+          //   schema: DocumentTypeListResponseSchema
+          // }
         },
       },
       {
@@ -30,13 +29,13 @@ export default {
         handler: DocumentTypeController.createDocumentType,
         options: {
           description: 'Create a document type',
-          tags: ['api'],
+          tags: ['Document type', 'api'],
           validate: {
             payload: DocumentTypePayloadSchema
           },
-          response: {
-            schema: DocumentTypeResponseSchema
-          }
+          // response: {
+          //   schema: DocumentTypeResponseSchema
+          // }
         },
       },
       {
@@ -45,15 +44,15 @@ export default {
         handler: DocumentTypeController.getDocumentType,
         options: {
           description: 'Get a document type by id',
-          tags: ['api'],
+          tags: ['Document type', 'api'],
+          // response: {
+          //   schema: DocumentTypeResponseSchema
+          // },
           validate: {
             params: Joi.object({
-              id: DocumentTypePayloadSchema.extract('id')
+              id: Joi.number().required().description('The id of the user')
             })
           },
-          response: {
-            schema: DocumentTypeResponseSchema
-          }
         },
       },
       // {
@@ -62,7 +61,7 @@ export default {
       //   handler: DocumentTypeController.deleteUser,
       //   options: {
       //     description: 'Delete a user',
-      //     tags: ['api'],
+      //     tags: ['Document type', 'api'],
       //   },
       // },
     ]);

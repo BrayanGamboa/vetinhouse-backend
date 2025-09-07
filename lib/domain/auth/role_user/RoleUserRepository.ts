@@ -14,7 +14,7 @@ export default class {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  get(roleUserId: number): Promise<RoleUser> {
+  getByFilter(filter: any): Promise<any> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 

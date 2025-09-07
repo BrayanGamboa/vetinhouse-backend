@@ -3,6 +3,7 @@ import RoleUserRepository from "../../../../domain/auth/role_user/RoleUserReposi
 import models from "../../../orm/sequelize/models/relational_models";
 const { mix_role } = models;
 import { convertCamelToSnakeCase } from '../../../../application/utilities/general_functions'
+import Boom from "@hapi/boom";
 
 export default class extends RoleUserRepository {
   async persist(domain_role_user: RoleUser) {
@@ -25,7 +26,7 @@ export default class extends RoleUserRepository {
       );
     } catch (err) {
       console.error(err);
-      throw new Error('Error creating user');
+      throw Boom.badImplementation('Error - role user repository - persist');
     }
   }
   async find(): Promise<RoleUser[]> {
@@ -39,28 +40,29 @@ export default class extends RoleUserRepository {
       ));
     } catch (err) {
       console.error(err);
-      throw new Error('Error fetching role users');
-    } 
+      throw Boom.badImplementation('Error - role users repository - find');
+    }
   }
-  async get(roleUserId: number): Promise<RoleUser> {
-    try {
-      const seqRoleUser = await mix_role.findByPk(roleUserId);
-      
-      let roleUser = new RoleUser();
 
-      if (seqRoleUser != null) {
-        roleUser = new RoleUser(
+  async getByFilter(filter: any): Promise<any> {
+    try {
+      filter = convertCamelToSnakeCase(filter);
+
+      const seqRoleUser = await mix_role.findAll({
+        where: filter
+      });
+      if (seqRoleUser.length > 0) {
+        return seqRoleUser.map((seqRoleUser: any) => new RoleUser(
           seqRoleUser.id,
           seqRoleUser.name,
           seqRoleUser.description,
-          seqRoleUser.info
-        );
-      }
-
-      return roleUser;
+          seqRoleUser.info)
+        )
+      };
+      return;
     } catch (err) {
       console.error(err);
-      throw new Error('Error fetching role user');
+      throw Boom.badImplementation('Error - role user repository - getByFilter');
     }
   }
 
@@ -68,7 +70,7 @@ export default class extends RoleUserRepository {
     try {
       const seqRoleUser = await mix_role.findByPk(roleUserId);
       if (seqRoleUser == null) {
-        throw new Error('Role user not found');
+        throw Boom.notFound('Role user not found');
       }
       await seqRoleUser.destroy();
       return new RoleUser(
@@ -79,7 +81,7 @@ export default class extends RoleUserRepository {
       );
     } catch (err) {
       console.error(err);
-      throw new Error('Error deleting role user');
+      throw Boom.badImplementation('Error - role user repository - remove');
     }
   }
 

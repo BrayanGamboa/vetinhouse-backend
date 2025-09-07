@@ -7,50 +7,63 @@ import DeleteUser from '../../../../application/use_cases/auth/role_user/DeleteR
 import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export default {
+  async createRoleUser(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-  async createRoleUser(request: Request) {
+      // Input
+      const { id, name, description } = request.payload as { id: number, name: string; description: string };
 
-    // Context
-    const serviceLocator = request.server.app.serviceLocator;
+      // Treatment
+      const roleUser = await CreateRoleUser(id, name, description, serviceLocator);
 
-    // Input
-    const { id, name, description } = request.payload as { id: number, name: string; description: string };
-
-    // Treatment
-    const roleUser = await CreateRoleUser(id, name, description, serviceLocator);
-    if (roleUser === 403) {
-      throw Boom.forbidden('Role user with this ID already exists');
+      // Output
+      return serviceLocator.roleUserSerializer.serialize(roleUser);
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
+      throw Boom.badImplementation('An internal server error occurred - createRoleUser');
     }
-    // Output
-    return serviceLocator.roleUserSerializer.serialize(roleUser);
   },
 
   async findRoleUsers(request: Request) {
-    const serviceLocator = request.server.app.serviceLocator;
+    try {
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Treatment
-    const rolesUser = await ListRoleUsers(serviceLocator);
+      // Treatment
+      const rolesUser = await ListRoleUsers(serviceLocator);
 
-    // Output
-    return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
+      // Output
+      return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
+    } catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('An internal server error occurred - findRoleUsers');
+    }
   },
 
-  async getRoleUser(request: Request) {
+  async getRoleUser(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Context
-    const serviceLocator = request.server.app.serviceLocator;
+      // Input
+      const roleUserId = request.params.id;
 
-    // Input
-    const roleUserId = request.params.id;
+      // Treatment
+      const rolaUser = await GetRoleUser(roleUserId, serviceLocator);
 
-    // Treatment
-    const user = await GetRoleUser(roleUserId, serviceLocator);
-
-    // Output
-    if (user.info == null) {
-      throw Boom.notFound('Role user not found');
+      // Output
+      return rolaUser ? serviceLocator.roleUserSerializer.serialize(rolaUser) : Boom.notFound('Role user not found');
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
+      throw Boom.badImplementation('An internal server error occurred - getRoleUser');
     }
-    return serviceLocator.roleUserSerializer.serialize(user);
   },
 
   // async deleteUser(request: Request, h: ResponseToolkit) {
