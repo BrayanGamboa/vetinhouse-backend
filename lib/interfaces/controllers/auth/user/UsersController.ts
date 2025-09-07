@@ -9,39 +9,49 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 export default {
 
   async createUser(request: Request, h: ResponseToolkit) {
-    const serviceLocator = request.server.app.serviceLocator;
-
     try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
+
+      // Input
       const { document, name, lastName, email, password, roleId, documentTypeId } = request.payload as any;
 
+      // Treatment
       const user = await CreateUser(document, name, lastName, email, password, roleId, documentTypeId, serviceLocator);
 
+      // Output
       return serviceLocator.userSerializer.serialize(user);
-    } catch (error) {
-      console.log({ error });
+    } catch (err) {
+      console.error(err);
       
-      if (Boom.isBoom(error)) {
-        return h.response(error.output.payload).code(error.output.statusCode);
-      }
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
 
-      // 👇 no tapes el error, usa el genérico solo si de verdad no es Boom
-      return Boom.badImplementation("Unexpected error");
+      return Boom.badImplementation("Unexpected error - createUser");
     }
   },
 
-  async findUsers(request: Request) {
+  async findUsers(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Context
-    const serviceLocator = request.server.app.serviceLocator;
+      // Treatment
+      const users = await ListUsers(serviceLocator);   
 
-    // Treatment
-    const users = await ListUsers(serviceLocator);
+      // Output
+      return users ? users.map(serviceLocator.userSerializer.serialize) : Boom.notFound('Users not found');
+    } catch (err) {
+      console.error(err);
 
-    // Output
-    return users.map(serviceLocator.userSerializer.serialize)
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+
+      throw Boom.badImplementation("Unexpected error - findUsers");
+    }
   },
 
-  async getUserById(request: Request) {
+  async getUserById(request: Request, h: ResponseToolkit) {
 
     try {
       // Context
@@ -52,32 +62,41 @@ export default {
 
       // Treatment
       const user = await GetUser(userId, serviceLocator);
-      console.log({user});
       
       // Output
-      if (!user) {
-        return Boom.notFound();
-      }
-      return serviceLocator.userSerializer.serialize(user);
-    } catch (error) {
-      console.error(error);
-      return Boom.badImplementation("Unexpected error");
+
+      return user ? serviceLocator.userSerializer.serialize(user) : Boom.notFound('User not found');
+
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+      
+      throw Boom.badImplementation("Unexpected error - getUserById");
     }
 
   },
 
-  // async deleteUser(request: Request, h: ResponseToolkit) {
+  async deleteUser(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-  //   // Context
-  //   const serviceLocator = request.server.app.serviceLocator;
+      // Input
+      const userId = request.params.id;
 
-  //   // Input
-  //   const userId = request.params.id;
+      // Treatment
+      await DeleteUser(userId, serviceLocator);
 
-  //   // Treatment
-  //   await DeleteUser(userId, serviceLocator);
+      // Output
+      return h.response().code(204);
+    } catch (err) {
+      console.error(err);
 
-  //   // Output
-  //   return h.response().code(204);
-  // },
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+      
+      throw Boom.badImplementation("Unexpected error - deleteUser");
+    }
+  },
 }

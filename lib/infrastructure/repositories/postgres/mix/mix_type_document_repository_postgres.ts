@@ -2,7 +2,8 @@ import TypeDocument from "../../../../domain/mix/type_document/TypeDocument";
 import TypeDocumentRepository from "../../../../domain/mix/type_document/TypeDocumentRepository";
 import models from "../../../orm/sequelize/models/relational_models";
 const { mix_document_type } = models;
-import { convertCamelToSnakeCase } from '../../../../application/utilities/general_functions'
+import { convertCamelToSnakeCase } from '../../../../application/utilities/general_functions';
+import Boom from '@hapi/boom';
 
 export default class extends TypeDocumentRepository {
   async persist(domain_role_user: TypeDocument) {
@@ -25,42 +26,27 @@ export default class extends TypeDocumentRepository {
       );
     } catch (err) {
       console.error(err);
-      throw new Error('Error creating document type');
+      throw Boom.badImplementation('Error - document type repository - persist');
     }
   }
-  async find(): Promise<TypeDocument[]> {
-    try {
-      const seqDocumentType = await mix_document_type.findAll();
-      return seqDocumentType.map((seqDocumentType: any) => new TypeDocument(
-        seqDocumentType.id,
-        seqDocumentType.name,
-        seqDocumentType.description,
-        seqDocumentType.info
-      ));
-    } catch (err) {
-      console.error(err);
-      throw new Error('Error fetching document types');
-    } 
-  }
-  async get(documentTypeId: number): Promise<TypeDocument> {
-    try {
-      const seqDocumentType = await mix_document_type.findByPk(documentTypeId);
-      
-      let documentType = new TypeDocument();
 
-      if (seqDocumentType != null) {
-        documentType = new TypeDocument(
+  async getByFilter(filter: any): Promise<any> {
+    try {
+      filter = convertCamelToSnakeCase(filter);
+      const seqDocumentType = await mix_document_type.findAll({ where: filter });
+
+      if (seqDocumentType.length > 0) {
+        return seqDocumentType.map((seqDocumentType: any) => new TypeDocument(
           seqDocumentType.id,
           seqDocumentType.name,
           seqDocumentType.description,
           seqDocumentType.info
-        );
+        ));
       }
-
-      return documentType;
+      return;
     } catch (err) {
       console.error(err);
-      throw new Error('Error fetching document type');
+      throw Boom.badImplementation('Error - document type repository - getByFilter');
     }
   }
 
@@ -68,7 +54,7 @@ export default class extends TypeDocumentRepository {
     try {
       const seqDocumentType = await mix_document_type.findByPk(documentTypeId);
       if (seqDocumentType == null) {
-        throw new Error('Document type not found');
+        throw Boom.badImplementation('Document type not found');
       }
       await seqDocumentType.destroy();
       return new TypeDocument(
@@ -79,7 +65,7 @@ export default class extends TypeDocumentRepository {
       );
     } catch (err) {
       console.error(err);
-      throw new Error('Error deleting document type');
+      throw Boom.badImplementation('Error - document type repository - remove');
     }
   }
 

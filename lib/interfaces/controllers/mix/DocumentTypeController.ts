@@ -8,31 +8,41 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export default {
 
-  async createDocumentType(request: Request) {
+  async createDocumentType(request: Request, h: ResponseToolkit) {
+    try{
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Context
-    const serviceLocator = request.server.app.serviceLocator;
+      // Input
+      const { id, name, description } = request.payload as { id: number, name: string; description: string };
 
-    // Input
-    const { id, name, description } = request.payload as { id: number, name: string; description: string };
+      // Treatment
+      const documentType = await CreateDocumentType(id, name, description, serviceLocator);
 
-    // Treatment
-    const documentType = await CreateDocumentType(id, name, description, serviceLocator);
-    if (documentType === 403) {
-      throw Boom.forbidden('Document type with this ID already exists');
+      // Output
+      return serviceLocator.roleUserSerializer.serialize(documentType);
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
+      throw Boom.badImplementation('An internal server error occurred - createDocumentType');
     }
-    // Output
-    return serviceLocator.roleUserSerializer.serialize(documentType);
   },
 
   async findDocumentTypes(request: Request) {
-    const serviceLocator = request.server.app.serviceLocator;
+    try{
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Treatment
-    const rolesUser = await ListDocumentType(serviceLocator);
+      // Treatment
+      const rolesUser = await ListDocumentType(serviceLocator);
 
-    // Output
-    return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
+      // Output
+      return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
+    }catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('An internal server error occurred - findDocumentTypes');
+    }
   },
 
   async getDocumentType(request: Request) {
@@ -47,10 +57,7 @@ export default {
     const user = await GetDocumentType(roleUserId, serviceLocator);
 
     // Output
-    if (user.info == null) {
-      throw Boom.notFound('Document type not found');
-    }
-    return serviceLocator.roleUserSerializer.serialize(user);
+    return user ? serviceLocator.roleUserSerializer.serialize(user): Boom.notFound('Document type not found');
   },
 
   // async deleteUser(request: Request, h: ResponseToolkit) {

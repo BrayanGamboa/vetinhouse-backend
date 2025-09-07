@@ -38,48 +38,54 @@ export default class extends UserRepository {
     }
   }
 
-  async getByFilter(filter: any): Promise<User> {
-    const snakeFilter = convertCamelToSnakeCase(filter);
-
-    // 👇 Sequelize espera un objeto "where", no el string directo
-    const seqUser = await auth_user.findOne({
-      where: snakeFilter,
-    });
-
-    let user = new User();
-    if (seqUser != null) {
-      user = new User(
-        seqUser.document,
-        seqUser.name,
-        seqUser.lastName,
-        seqUser.email,
-        seqUser.password,
-        seqUser.document_type_id,
-        seqUser.role_id,
-        seqUser.info
-      );
-    }
-    return user;
-
-  }
-
-  async find(): Promise<User[]> {
+  async update(userId: string, fieldsUpdate: any): Promise<User> {
     try {
-      const seqUser = await auth_user.findAll();
-      return seqUser.map((seqUser: any) => new User(
-        seqUser.document,
-        seqUser.name,
-        seqUser.lastName,
-        seqUser.email,
-        seqUser.password,
-        seqUser.documentType,
-        seqUser.roleId,
-        seqUser.info
-      ))
-    } catch (error) {
-      console.error(error);
-      throw new Error('Error fetching users');
+
+      return new User();
+    } catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('Error updating user');
     }
   }
+
+  async getByFilter(filter: any): Promise<any> {
+    try {
+
+      filter = convertCamelToSnakeCase(filter);
+      const seqUser = await auth_user.findAll({
+        where: filter
+      });      
+
+      if (seqUser.length > 0) {        
+        return seqUser.map((seqUser: any) => new User(
+          seqUser.document,
+          seqUser.name,
+          seqUser.lastName,
+          seqUser.email,
+          seqUser.password,
+          seqUser.document_type_id,
+          seqUser.role_id,
+          seqUser.info)
+        );
+      }
+      
+      return;
+    } catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('Error getting user by filter');
+    }
+  }
+
+  async remove(userId: string): Promise<boolean> {
+    try {
+      const seqUser = await auth_user.findByPk(userId);
+      return await seqUser.destroy(seqUser);
+    } catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('Error deleting user');
+    }
+  }
+
+
 
 }

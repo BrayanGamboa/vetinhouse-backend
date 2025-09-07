@@ -1,6 +1,7 @@
 import { Server } from '@hapi/hapi';
 import RoleUsersController from '../../controllers/auth/role_user/RoleUsersController';
 import { RoleUserPayloadSchema, RoleUserListResponseSchema, RoleUserResponseSchema } from '../../../application/schemas/auth/RoleUser';
+import Joi from 'joi';
 
 const pathBase = '/role_user';
 
@@ -16,10 +17,10 @@ export default {
         handler: RoleUsersController.findRoleUsers,
         options: {
           description: 'List all users',
-          tags: ['api'],
-          response: {
-            schema: RoleUserListResponseSchema
-          }
+          tags: ['api', 'Role user'],
+          // response: {
+          //   schema: RoleUserListResponseSchema
+          // }
         },
       },
       {
@@ -28,13 +29,13 @@ export default {
         handler: RoleUsersController.createRoleUser,
         options: {
           description: 'Create a role user',
-          tags: ['api'],
+          tags: ['api', 'Role user'],
           validate: {
             payload: RoleUserPayloadSchema
           },
-          response: {
-            schema: RoleUserResponseSchema
-          }
+          // response: {
+          //   schema: RoleUserResponseSchema
+          // }
         },
       },
       {
@@ -43,10 +44,15 @@ export default {
         handler: RoleUsersController.getRoleUser,
         options: {
           description: 'Get a role user by id',
-          tags: ['api'],
-          response: {
-            schema: RoleUserResponseSchema
-          }
+          tags: ['api', 'Role user'],
+          // response: {
+          //   schema: RoleUserResponseSchema
+          // },
+          validate: {
+            params: Joi.object({
+              id: Joi.number().required().description('The id of the user')
+            })
+          },
         },
       },
       // {

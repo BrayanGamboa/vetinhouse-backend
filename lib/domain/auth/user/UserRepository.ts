@@ -6,19 +6,15 @@ export default class {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  merge(domainUser: User): Promise<User> {
+  remove(userId: string): Promise<boolean> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  remove(userId: string): Promise<User> {
+  getByFilter(filter: any): Promise<any> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  getByFilter(filter: any): Promise<User> {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-  }
-
-  find():Promise<User[]> {
+  update(userId: string, fieldsUpdate: any): Promise<User> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 

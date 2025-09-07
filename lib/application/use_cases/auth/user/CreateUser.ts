@@ -19,18 +19,16 @@ export default async (
     updated_at: new Date().toISOString(),
   });
 
-  if (((await userRepository.getByFilter({document})).info) != null) {
-    throw Boom.forbidden("User already exists");
-  }
+  if (await userRepository.getByFilter({document, email}))
+    throw Boom.forbidden("Document or email already in use");
 
-  if (((await userRepository.getByFilter({email})).info) != null) {
-    throw Boom.forbidden("Email already exists");
-  }
-
-  if (((await documentTypeRepository.get(documentTypeId)).info) == null)
+  const result = await documentTypeRepository.getByFilter({ id: documentTypeId })
+  console.log({result, documentTypeId, roleId});
+  
+  if (!(await documentTypeRepository.getByFilter({id : documentTypeId})))
     throw Boom.notFound('Document type not found');
 
-  if (((await roleUserRepository.get(roleId)).info) == null)
+  if (!(await roleUserRepository.getByFilter({id : roleId})))
     throw Boom.notFound("Role user not found");
 
   return await userRepository.persist(user);

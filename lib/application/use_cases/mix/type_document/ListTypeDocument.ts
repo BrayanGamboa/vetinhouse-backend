@@ -1,6 +1,6 @@
-import DocumentTypeRepository from "../../../../domain/auth/role_user/RoleUserRepository";
-import DocumentType from "../../../../domain/auth/role_user/RoleUser";
+import DocumentTypeRepository from "../../../../domain/mix/type_document/TypeDocumentRepository";
+import DocumentType from "../../../../domain/mix/type_document/TypeDocument";
 
 export default async ({ documentTypeRepository }: { documentTypeRepository: DocumentTypeRepository }): Promise<DocumentType[]> => { 
-  return await documentTypeRepository.find();
+  return await documentTypeRepository.getByFilter({});
 };
