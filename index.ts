@@ -12,7 +12,7 @@ const start = async () => {
 
     console.log('Server running at:', server.info.uri);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
   }
 };

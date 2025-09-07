@@ -1,5 +1,7 @@
 import { Server } from '@hapi/hapi';
 import UsersController from '../../controllers/auth/user/UsersController';
+import { UserPayloadSchema, UserResponseSchema, UserListResponseSchema } from '../../../application/schemas/auth/UserSchema';
+import Joi from 'joi';
 
 const pathBase = '/user';
 
@@ -9,42 +11,69 @@ export default {
   register: async (server: Server) => {
 
     server.route([
-      // {
-      //   method: 'GET',
-      //   path: '/users',
-      //   handler: UsersController.findUsers,
-      //   options: {
-      //     description: 'List all users',
-      //     tags: ['api'],
-      //   },
-      // },
+      {
+        method: 'GET',
+        path: pathBase,
+        handler: UsersController.findUsers,
+        options: {
+          description: 'List all users',
+          tags: ['api', 'Users'],
+          // response:{
+            // schema: UserListResponseSchema
+          // }
+        },
+      },
       {
         method: 'POST',
-        path: `${pathBase}`,
+        path: pathBase,
         handler: UsersController.createUser,
         options: {
           description: 'Create a user',
-          tags: ['api'],
+          tags: ['api', 'Users'],
+          validate: {
+            payload: UserPayloadSchema
+          },
+          // response: {
+          //   schema: UserResponseSchema
+          // }
         },
       },
-      // {
-      //   method: 'GET',
-      //   path: `${pathBase}/{id}`,
-      //   handler: UsersController.getUser,
-      //   options: {
-      //     description: 'Get a user by its {id}',
-      //     tags: ['api'],
-      //   },
-      // },
-      // {
-      //   method: 'DELETE',
-      //   path: `${pathBase}/{id}`,
-      //   handler: UsersController.deleteUser,
-      //   options: {
-      //     description: 'Delete a user',
-      //     tags: ['api'],
-      //   },
-      // },
+      {
+        method: 'GET',
+        path: `${pathBase}/{id}`,
+        handler: UsersController.getUserById,
+        options: {
+          description: 'Get a user by its {id}',
+          tags: ['api'],
+          // response:{
+          //   schema: UserResponseSchema
+          // },
+          validate: {
+            params: Joi.object({
+              id: Joi.string().required().description('The id of the user')
+            })
+          },
+        },
+      },
+      {
+        method: 'DELETE',
+        path: `${pathBase}/{id}`,
+        handler: UsersController.deleteUser,
+        options: {
+          description: 'Delete a user',
+          tags: ['api'],
+          // response:{
+          //   status: {
+          //     204: UserResponseSchema
+          //   }
+          // },
+          validate: {
+            params: Joi.object({
+              id: Joi.string().required().description('The id of the user')
+            })
+          },
+        },
+      },      
     ]);
   }
 };

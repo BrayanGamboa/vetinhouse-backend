@@ -1,5 +1,7 @@
 import { Server } from '@hapi/hapi';
-import RoleUsersController from '../../controllers/auth//role_user/RoleUsersController';
+import RoleUsersController from '../../controllers/auth/role_user/RoleUsersController';
+import { RoleUserPayloadSchema, RoleUserListResponseSchema, RoleUserResponseSchema } from '../../../application/schemas/auth/RoleUser';
+import Joi from 'joi';
 
 const pathBase = '/role_user';
 
@@ -11,31 +13,48 @@ export default {
     server.route([
       {
         method: 'GET',
-        path: `${pathBase}`,
+        path: pathBase,
         handler: RoleUsersController.findRoleUsers,
         options: {
           description: 'List all users',
-          tags: ['api'],
+          tags: ['api', 'Role user'],
+          // response: {
+          //   schema: RoleUserListResponseSchema
+          // }
         },
       },
       {
         method: 'POST',
-        path: `${pathBase}`,
+        path: pathBase,
         handler: RoleUsersController.createRoleUser,
         options: {
           description: 'Create a role user',
-          tags: ['api'],
+          tags: ['api', 'Role user'],
+          validate: {
+            payload: RoleUserPayloadSchema
+          },
+          // response: {
+          //   schema: RoleUserResponseSchema
+          // }
         },
       },
-      // {
-      //   method: 'GET',
-      //   path: `${pathBase}/{id}`,
-      //   handler: UsersController.getUser,
-      //   options: {
-      //     description: 'Get a user by its {id}',
-      //     tags: ['api'],
-      //   },
-      // },
+      {
+        method: 'GET',
+        path: `${pathBase}/{id}`,
+        handler: RoleUsersController.getRoleUser,
+        options: {
+          description: 'Get a role user by id',
+          tags: ['api', 'Role user'],
+          // response: {
+          //   schema: RoleUserResponseSchema
+          // },
+          validate: {
+            params: Joi.object({
+              id: Joi.number().required().description('The id of the user')
+            })
+          },
+        },
+      },
       // {
       //   method: 'DELETE',
       //   path: `${pathBase}/{id}`,

@@ -8,5 +8,5 @@ export default async (email: string, password: string, { userRepository, accessT
     throw new Error('Bad credentials');
   }
 
-  return accessTokenManager.generate({ uid: user.id });
+  return accessTokenManager.generate({ uid: user.document });
 };

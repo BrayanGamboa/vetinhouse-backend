@@ -5,10 +5,12 @@ import JwtAccessTokenManager from '../security/JwtAccessTokenManager';
 // Importe de serializadores
 import UserSerializer from '../../interfaces/serializers/auth/UserSerializer';
 import RoleUserSerializer from '../../interfaces/serializers/auth/RoleUserSerializer';
+import MixDocumentTypeSerializer from '../../interfaces/serializers/mix/DocumentTypeSerializer';
 
 // Import de repositorios
 import AuthUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_repository_postgres';
 import AuthRoleUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_role_repository_postgres';
+import MixDocumentTypeRepositoryPostgres from '../repositories/postgres/mix/mix_type_document_repository_postgres';
 
 
 export interface ServiceLocator {
@@ -16,10 +18,12 @@ export interface ServiceLocator {
   // Repositorios
   userRepository: any;
   roleUserRepository: any;
+  documentTypeRepository: any;
   
   // Serializadores 
   userSerializer: UserSerializer;
   roleUserSerializer: RoleUserSerializer;
+  documentTypeSerializer: MixDocumentTypeSerializer;
   
 }
 
@@ -28,12 +32,14 @@ export function buildBeans(): ServiceLocator {
     accessTokenManager: new JwtAccessTokenManager(),
 
     // Repositorios
-    userRepository: {} as any,
-    roleUserRepository: {} as any,
+    userRepository: new AuthUserRepositoryPostgres(),
+    roleUserRepository: new AuthRoleUserRepositoryPostgres(),
+    documentTypeRepository: new MixDocumentTypeRepositoryPostgres(),
 
     // Serializadores
     userSerializer: new UserSerializer(),
     roleUserSerializer: new RoleUserSerializer(),
+    documentTypeSerializer: new MixDocumentTypeSerializer(),
 
   };
 
@@ -43,6 +49,9 @@ export function buildBeans(): ServiceLocator {
   } else if (environment.dialect === constants.SUPPORTED_DATABASE.POSTGRES) {
     beans.userRepository = new AuthUserRepositoryPostgres();
     beans.roleUserRepository = new AuthRoleUserRepositoryPostgres();
+    beans.documentTypeRepository = new MixDocumentTypeRepositoryPostgres();
+
+
   } else {
     throw new Error(`Unsupported dialect: ${environment.dialect}`);
   }

@@ -25,9 +25,14 @@ const createServer = async () => {
       plugin: HapiSwagger,
       options: {
         info: {
-          title: 'Test API Documentation',
+          title: 'API Documentation',
           version: Package.version,
         },
+        // tags: [
+        //   { name: 'Document type', description: 'Operations about document types' },
+        //   { name: 'Role user', description: 'Operations about user roles' },
+        //   { name: 'Users', description: 'Authentication endpoints' },
+        // ]
       }
     },
     {
@@ -53,6 +58,7 @@ const createServer = async () => {
     require('../../interfaces/routes/hello').default,
     require('../../interfaces/routes/auth/user').default,
     require('../../interfaces/routes/auth/role_user').default,
+    require('../../interfaces/routes/mix/document_type').default,
   ]);
 
   server.app.serviceLocator = buildBeans();

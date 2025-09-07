@@ -8,64 +8,95 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export default {
 
-  async createUser(request: Request) {
+  async createUser(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Context
-    const serviceLocator = request.server.app.serviceLocator;
+      // Input
+      const { document, name, lastName, email, password, roleId, documentTypeId } = request.payload as any;
 
-    // Input
-    const { document, name, lastName, email, password, roleId, documentTypeId } = request.payload as { document: string, name: string; lastName: string; email: string; password: string, roleId: number, documentTypeId: number };
+      // Treatment
+      const user = await CreateUser(document, name, lastName, email, password, roleId, documentTypeId, serviceLocator);
 
-    // Treatment
-    const user = await CreateUser(document, name, lastName, email, password, roleId, documentTypeId, serviceLocator);
+      // Output
+      return serviceLocator.userSerializer.serialize(user);
+    } catch (err) {
+      console.error(err);
+      
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
 
-    // Output
-    return serviceLocator.userSerializer.serialize(user);
+      return Boom.badImplementation("Unexpected error - createUser");
+    }
   },
 
-  // async findUsers(request: Request) {
+  async findUsers(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-  //   // Context
-  //   const serviceLocator = request.server.app.serviceLocator;
+      // Treatment
+      const users = await ListUsers(serviceLocator);   
 
-  //   // Treatment
-  //   const users = await ListUsers(serviceLocator);
+      // Output
+      return users ? users.map(serviceLocator.userSerializer.serialize) : Boom.notFound('Users not found');
+    } catch (err) {
+      console.error(err);
 
-  //   // Output
-  //   return users.map(serviceLocator.userSerializer.serialize)
-  // },
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
 
-  // async getUser(request: Request) {
+      throw Boom.badImplementation("Unexpected error - findUsers");
+    }
+  },
 
-  //   // Context
-  //   const serviceLocator = request.server.app.serviceLocator;
+  async getUserById(request: Request, h: ResponseToolkit) {
 
-  //   // Input
-  //   const userId = request.params.id;
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-  //   // Treatment
-  //   const user = await GetUser(userId, serviceLocator);
+      // Input
+      const userId = request.params.id;
 
-  //   // Output
-  //   if (!user) {
-  //     return Boom.notFound();
-  //   }
-  //   return serviceLocator.userSerializer.serialize(user);
-  // },
+      // Treatment
+      const user = await GetUser(userId, serviceLocator);
+      
+      // Output
 
-  // async deleteUser(request: Request, h: ResponseToolkit) {
+      return user ? serviceLocator.userSerializer.serialize(user) : Boom.notFound('User not found');
 
-  //   // Context
-  //   const serviceLocator = request.server.app.serviceLocator;
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+      
+      throw Boom.badImplementation("Unexpected error - getUserById");
+    }
 
-  //   // Input
-  //   const userId = request.params.id;
+  },
 
-  //   // Treatment
-  //   await DeleteUser(userId, serviceLocator);
+  async deleteUser(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-  //   // Output
-  //   return h.response().code(204);
-  // },
+      // Input
+      const userId = request.params.id;
 
-};
+      // Treatment
+      await DeleteUser(userId, serviceLocator);
+
+      // Output
+      return h.response().code(204);
+    } catch (err) {
+      console.error(err);
+
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+      
+      throw Boom.badImplementation("Unexpected error - deleteUser");
+    }
+  },
+}

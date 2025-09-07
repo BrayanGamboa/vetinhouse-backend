@@ -11,7 +11,8 @@ export default {
       {
         method: 'GET',
         path: '/private',
-        config: {
+        options:
+        {
           auth: 'oauth-jwt',
           handler: (request: Request) => request.auth.credentials.uid,
           description: 'Example of a private resource',
