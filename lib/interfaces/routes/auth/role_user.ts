@@ -1,6 +1,6 @@
 import { Server } from '@hapi/hapi';
 import RoleUsersController from '../../controllers/auth/role_user/RoleUsersController';
-import { RoleUserPayloadSchema, RoleUserListResponseSchema, RoleUserResponseSchema } from '../../../application/schemas/auth/RoleUser';
+import { RoleUserPayloadSchema } from '../../../application/schemas/auth/RoleUser';
 import Joi from 'joi';
 
 const pathBase = '/role_user';

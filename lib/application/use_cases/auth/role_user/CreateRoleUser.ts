@@ -8,8 +8,6 @@ export default async (
   description: string,
   { roleUserRepository }: { roleUserRepository: RoleUserRepository }
 ) => {
-  console.log({ role: await roleUserRepository.getByFilter({ id, name }) });
-    
   if(await roleUserRepository.getByFilter({ id }))
     throw Boom.forbidden("Role user with this ID already exists, please choose another");
 

@@ -9,7 +9,7 @@ const start = async () => {
 
     const server = await createServer();
     await server.start();
-
+    // eslint-disable-next-line
     console.log('Server running at:', server.info.uri);
   } catch (err) {
     console.error(err);

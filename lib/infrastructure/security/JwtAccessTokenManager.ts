@@ -1,5 +1,4 @@
-'use strict';
-
+// eslint-disable-next-line
 const jwt = require('jsonwebtoken');
 
 import AccessTokenManager from '../../application/security/AccessTokenManager';

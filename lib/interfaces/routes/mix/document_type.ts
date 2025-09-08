@@ -1,6 +1,6 @@
 import { Server } from '@hapi/hapi';
 import DocumentTypeController from '../../controllers/mix/DocumentTypeController';
-import {DocumentTypePayloadSchema, DocumentTypeResponseSchema, DocumentTypeListResponseSchema} from '../../../application/schemas/mix/DocumentTypeSchema';
+import {DocumentTypePayloadSchema} from '../../../application/schemas/mix/DocumentTypeSchema';
 import Joi from 'joi';
 
 const pathBase = '/document_type';

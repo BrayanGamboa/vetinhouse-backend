@@ -24,6 +24,7 @@ export default {
       // Output
       return accessToken;
     } catch (err) {
+      console.error(err);
       return Boom.unauthorized('Bad credentials');
     }
   },
@@ -50,6 +51,7 @@ export default {
         artifacts: { accessToken: accessToken }
       });
     } catch (err) {
+      console.error(err);
       return Boom.unauthorized('Bad credentials');
     }
   },

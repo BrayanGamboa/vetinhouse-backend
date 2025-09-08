@@ -12,7 +12,6 @@ import AuthUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_
 import AuthRoleUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_role_repository_postgres';
 import MixDocumentTypeRepositoryPostgres from '../repositories/postgres/mix/mix_type_document_repository_postgres';
 
-
 export interface ServiceLocator {
   accessTokenManager: JwtAccessTokenManager;
   // Repositorios
@@ -50,8 +49,6 @@ export function buildBeans(): ServiceLocator {
     beans.userRepository = new AuthUserRepositoryPostgres();
     beans.roleUserRepository = new AuthRoleUserRepositoryPostgres();
     beans.documentTypeRepository = new MixDocumentTypeRepositoryPostgres();
-
-
   } else {
     throw new Error(`Unsupported dialect: ${environment.dialect}`);
   }

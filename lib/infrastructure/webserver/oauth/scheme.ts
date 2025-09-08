@@ -1,6 +1,4 @@
-'use strict';
-
-const AuthorizationController = require('../../../interfaces/controllers/AuthorizationController');
+import AuthorizationController from '../../../interfaces/controllers/AuthorizationController';
 
 export default () => {
   return {

@@ -1,5 +1,3 @@
-'use strict';
-
 import User from "../../../domain/auth/user/User";
 
 const _serializeSingleUser = (user: any) => {
@@ -17,7 +15,6 @@ const _serializeSingleUser = (user: any) => {
     }
   };
 };
-
 
 export default class {
 

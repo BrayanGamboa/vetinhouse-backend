@@ -21,9 +21,6 @@ export default async (
 
   if (await userRepository.getByFilter({document, email}))
     throw Boom.forbidden("Document or email already in use");
-
-  const result = await documentTypeRepository.getByFilter({ id: documentTypeId })
-  console.log({result, documentTypeId, roleId});
   
   if (!(await documentTypeRepository.getByFilter({id : documentTypeId})))
     throw Boom.notFound('Document type not found');

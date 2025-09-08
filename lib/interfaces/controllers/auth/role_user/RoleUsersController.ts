@@ -2,7 +2,6 @@ import Boom from '@hapi/boom';
 import ListRoleUsers from '../../../../application/use_cases/auth/role_user/ListRoleUsers';
 import CreateRoleUser from '../../../../application/use_cases/auth/role_user/CreateRoleUser';
 import GetRoleUser from '../../../../application/use_cases/auth/role_user/GetRoleUser';
-import DeleteUser from '../../../../application/use_cases/auth/role_user/DeleteRoleUser';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
 
