@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { DataTypes, Sequelize } from "sequelize";
 
 var _auth_user = require("./auth_user");

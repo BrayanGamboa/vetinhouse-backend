@@ -1,15 +1,14 @@
-'use strict';
-
 import { Server } from "@hapi/hapi";
 
-const AuthorizationController = require('../../../interfaces/controllers/AuthorizationController');
+import AuthorizationController from'../../../interfaces/controllers/AuthorizationController';
+import scheme from "./scheme";
 
 export default {
   name: 'oauth',
   version: '1.0.0',
   register: (server: Server) => {
 
-    server.auth.scheme('oauth', require('./scheme'));
+    server.auth.scheme('oauth', scheme);
 
     server.auth.strategy('oauth-jwt', 'oauth');
 

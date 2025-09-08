@@ -2,7 +2,6 @@ import Boom from '@hapi/boom';
 import ListDocumentType from '../../../application/use_cases/mix/type_document/ListTypeDocument';
 import CreateDocumentType from '../../../application/use_cases/mix/type_document/CreateTypeDocument';
 import GetDocumentType from '../../../application/use_cases/mix/type_document/GetTypeDocument';
-import DeleteUser from '../../../application/use_cases/mix/type_document/DeleteTypeDocument';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
 

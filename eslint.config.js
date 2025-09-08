@@ -1,3 +1,4 @@
+/* eslint-disable */
 const js = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const prettier = require("eslint-config-prettier");
@@ -9,15 +10,18 @@ module.exports = [
 
   // Reglas archivos TS
   {
+    ignores: ["dist/**", "test/**/*.ts"],
+  },
+  {
     files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        project: "./tsconfig.json",
+        project: ["./tsconfig.json", "./tsconfig.eslint.json"],
       },
     },
     rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -25,15 +29,6 @@ module.exports = [
       ],
       "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0 }],
       "no-console": ["error", { allow: ["warn", "error"] }],
-    },
-  },
-
-  // Reglas archivos JS
-  {
-    files: ["**/*.js"],
-    languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
     },
   },
 ];

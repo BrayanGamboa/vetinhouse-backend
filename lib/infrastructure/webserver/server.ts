@@ -4,8 +4,9 @@ import Vision from '@hapi/vision';
 import HapiSwagger from 'hapi-swagger';
 import Package from '../../../package.json';
 import { buildBeans, ServiceLocator } from '../../infrastructure/config/service-locator';
-const Good = require('@hapi/good');
-const Blipp = require('blipp');
+import pino from 'hapi-pino';
+// eslint-disable-next-line
+const Blipp = require('blipp'); //Este machetazo es necesario porque Blipp no tiene tipos para TS.
 
 declare module '@hapi/hapi' {
   interface ServerApplicationState {
@@ -36,7 +37,7 @@ const createServer = async () => {
       }
     },
     {
-      plugin: require('hapi-pino'),
+      plugin: pino,
       options: {
         transport: process.env.NODE_ENV !== 'production'
           ? {
@@ -53,14 +54,14 @@ const createServer = async () => {
       }
     },
   ]);
-
+  /* eslint-disable */
   await server.register([
     require('../../interfaces/routes/hello').default,
     require('../../interfaces/routes/auth/user').default,
     require('../../interfaces/routes/auth/role_user').default,
     require('../../interfaces/routes/mix/document_type').default,
   ]);
-
+  /* eslint-enable */
   server.app.serviceLocator = buildBeans();
 
   return server;

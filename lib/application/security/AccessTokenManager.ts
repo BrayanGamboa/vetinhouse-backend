@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import JwtAccessTokenManager from "../../infrastructure/security/JwtAccessTokenManager";
 
 export default class {

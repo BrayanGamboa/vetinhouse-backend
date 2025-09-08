@@ -8,7 +8,9 @@
     "start": "node index.ts",
     "test": "NODE_ENV=test jest",
     "coverage": "jest --coverage",
-    "commit": "cz"
+    "commit": "cz",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "config": {
     "commitizen": {
@@ -29,7 +31,6 @@
     "@hapi/hapi": "^21.4.3",
     "@hapi/inert": "^7.1.0",
     "@hapi/vision": "^7.0.3",
-    "blipp": "^4.0.2",
     "dotenv": "^17.2.1",
     "hapi-pino": "^12.1.0",
     "hapi-swagger": "^17.3.2",
@@ -45,15 +46,23 @@
   "devDependencies": {
     "@types/dotenv": "^8.2.3",
     "@types/sequelize": "^6.12.0",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "blipp": "^4.0.2",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.0.5",
     "nodemon": "^3.1.10",
     "pino-pretty": "^13.1.1",
+    "prettier": "^3.6.2",
     "sequelize-auto": "^0.8.8",
     "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.42.0"
   },
   "engines": {
     "node": ">=12",

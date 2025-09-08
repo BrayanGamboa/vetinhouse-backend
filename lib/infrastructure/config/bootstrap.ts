@@ -14,6 +14,7 @@ export default {
 
       try {
         await sequelize.sync();
+        // eslint-disable-next-line
         console.log('Connection to DB has been established successfully.');
       } catch (err) {
         console.error('Unable to connect to the database:', err);

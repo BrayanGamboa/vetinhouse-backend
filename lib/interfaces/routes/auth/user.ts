@@ -1,6 +1,6 @@
 import { Server } from '@hapi/hapi';
 import UsersController from '../../controllers/auth/user/UsersController';
-import { UserPayloadSchema, UserResponseSchema, UserListResponseSchema } from '../../../application/schemas/auth/UserSchema';
+import { UserPayloadSchema } from '../../../application/schemas/auth/UserSchema';
 import Joi from 'joi';
 
 const pathBase = '/user';
