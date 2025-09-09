@@ -16,7 +16,12 @@ declare module '@hapi/hapi' {
 
 const createServer = async () => {
   const server = Hapi.server({
-    port: process.env.PORT || 3000
+    port: process.env.PORT || 3000,
+    routes: {
+      cors: {
+        origin: ["*"],
+      }
+    }
   });
   await server.register([
     Blipp,
