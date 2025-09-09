@@ -56,7 +56,6 @@ export const convertUpperCase = (text: string): string => {
   return text.toUpperCase();
 };
 
-
 export interface InfoResponse {
   created_at: string;
   updated_at: string;

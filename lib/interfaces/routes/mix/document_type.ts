@@ -1,6 +1,6 @@
 import { Server } from '@hapi/hapi';
 import DocumentTypeController from '../../controllers/mix/DocumentTypeController';
-import {DocumentTypePayloadSchema, DocumentTypeResponseSchema, DocumentTypeListResponseSchema} from '../../../application/schemas/mix/DocumentTypeSchema';
+import {DocumentTypePayloadSchema, DocumentTypeListResponseSchema, DocumentTypeResponseSchema} from '../../../application/schemas/mix/DocumentTypeSchema';
 import Joi from 'joi';
 
 const pathBase = '/document_type';
@@ -18,9 +18,9 @@ export default {
         options: {
           description: 'List all document types',
           tags: ['Document type', 'api'],
-          // response: {
-          //   schema: DocumentTypeListResponseSchema
-          // }
+          response: {
+            schema: DocumentTypeListResponseSchema
+          }
         },
       },
       {
@@ -33,9 +33,9 @@ export default {
           validate: {
             payload: DocumentTypePayloadSchema
           },
-          // response: {
-          //   schema: DocumentTypeResponseSchema
-          // }
+          response: {
+            schema: DocumentTypeResponseSchema
+          }
         },
       },
       {
@@ -45,9 +45,9 @@ export default {
         options: {
           description: 'Get a document type by id',
           tags: ['Document type', 'api'],
-          // response: {
-          //   schema: DocumentTypeResponseSchema
-          // },
+          response: {
+            schema: DocumentTypeListResponseSchema
+          },
           validate: {
             params: Joi.object({
               id: Joi.number().required().description('The id of the user')

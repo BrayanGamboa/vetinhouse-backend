@@ -1,6 +1,6 @@
 import { Server } from '@hapi/hapi';
 import UsersController from '../../controllers/auth/user/UsersController';
-import { UserPayloadSchema, UserResponseSchema, UserListResponseSchema } from '../../../application/schemas/auth/UserSchema';
+import { UserPayloadSchema, UserListResponseSchema, UserResponseSchema } from '../../../application/schemas/auth/UserSchema';
 import Joi from 'joi';
 
 const pathBase = '/user';
@@ -18,9 +18,9 @@ export default {
         options: {
           description: 'List all users',
           tags: ['api', 'Users'],
-          // response:{
-            // schema: UserListResponseSchema
-          // }
+          response:{
+            schema: UserListResponseSchema
+          }
         },
       },
       {
@@ -33,9 +33,9 @@ export default {
           validate: {
             payload: UserPayloadSchema
           },
-          // response: {
-          //   schema: UserResponseSchema
-          // }
+          response: {
+            schema: UserResponseSchema
+          }
         },
       },
       {
@@ -45,9 +45,9 @@ export default {
         options: {
           description: 'Get a user by its {id}',
           tags: ['api'],
-          // response:{
-          //   schema: UserResponseSchema
-          // },
+          response:{
+            schema: UserListResponseSchema
+          },
           validate: {
             params: Joi.object({
               id: Joi.string().required().description('The id of the user')
@@ -62,11 +62,9 @@ export default {
         options: {
           description: 'Delete a user',
           tags: ['api'],
-          // response:{
-          //   status: {
-          //     204: UserResponseSchema
-          //   }
-          // },
+          response:{
+            emptyStatusCode: 204
+          },
           validate: {
             params: Joi.object({
               id: Joi.string().required().description('The id of the user')
@@ -81,11 +79,10 @@ export default {
         options: {
           description: 'Login a user',
           tags: ['api'],
-          // response:{
-          //   status: {
-          //     204: UserResponseSchema
-          //   }
-          // },
+          response: {
+            emptyStatusCode: 200,
+            disconnectStatusCode: 401,
+          },
           validate: {
             payload: Joi.object({
               email: Joi.string().email().required().example("test@gmail.com"),
