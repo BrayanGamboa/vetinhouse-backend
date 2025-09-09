@@ -20,8 +20,6 @@ const createServer = async () => {
     routes: {
       cors: {
         origin: ["*"],
-        // additionalHeaders: ["authorization", "content-type"],
-        // credentials: true // si necesitas enviar cookies/autenticación
       }
     }
   });
