@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import User from "../../../../domain/auth/user/User";
 import UserRepository from "../../../../domain/auth/user/UserRepository";
 import models from "../../../orm/sequelize/models/relational_models";
