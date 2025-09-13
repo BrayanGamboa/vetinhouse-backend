@@ -7,6 +7,10 @@ export default class {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
+  update(roleUserId: number, fields: any): Promise<RoleUser> {
+    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
+  }
+
   merge(domainRoleUser: RoleUser): Promise<RoleUser> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
