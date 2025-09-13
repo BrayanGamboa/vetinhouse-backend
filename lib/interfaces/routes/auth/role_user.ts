@@ -39,6 +39,20 @@ export default {
         },  
       },
       {
+        method: 'PATCH',
+        path: `${pathBase}/{id}`,
+        handler: RoleUsersController.updateRoleUser,
+        options: {
+          description: 'Update a role user',
+          tags: ['api', 'Role user'],
+          validate: {
+            params: Joi.object({
+              id: Joi.number().required().description('The id of the user')
+            })
+          },
+        },
+      },
+      {
         method: 'GET',
         path: `${pathBase}/{id}`,
         handler: RoleUsersController.getRoleUser,
@@ -55,15 +69,15 @@ export default {
           },
         },
       },
-      // {
-      //   method: 'DELETE',
-      //   path: `${pathBase}/{id}`,
-      //   handler: UsersController.deleteUser,
-      //   options: {
-      //     description: 'Delete a user',
-      //     tags: ['api'],
-      //   },
-      // },
+      {
+        method: 'DELETE',
+        path: `${pathBase}/{id}`,
+        handler: RoleUsersController.deleteRoleUser,
+        options: {
+          description: 'Delete a role user',
+          tags: ['api'],
+        },
+      },
     ]);
   }
 };

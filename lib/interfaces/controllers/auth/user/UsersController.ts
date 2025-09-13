@@ -6,6 +6,7 @@ import DeleteUser from '../../../../application/use_cases/auth/user/DeleteUser';
 import LoginUser from '../../../../application/use_cases/auth/user/LoginUser';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
+import { CODE_RETURN_SUCCESS } from '../../../../infrastructure/config/constants';
 
 export default {
 
@@ -32,6 +33,29 @@ export default {
     }
   },
 
+  async updateUser(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
+
+      // Input
+      const fields = request.payload as any;
+      const userId = request.params.id;
+
+      // Treatment
+      await serviceLocator.userRepository.update(userId, fields);
+
+      // Output
+      return h.response().code(CODE_RETURN_SUCCESS);
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err))
+        return h.response(err.output.payload).code(err.output.statusCode);
+
+      return Boom.badImplementation("Unexpected error - updateUser");
+    }
+  },
+
   async findUsers(request: Request, h: ResponseToolkit) {
     try {
       // Context
@@ -41,7 +65,7 @@ export default {
       const users = await ListUsers(serviceLocator);   
 
       // Output
-      return users ? users.map(serviceLocator.userSerializer.serialize) : Boom.notFound('Users not found');
+      return users ? users.map(serviceLocator.userSerializer.serialize) : Boom.notFound();
     } catch (err) {
       console.error(err);
 
@@ -66,7 +90,7 @@ export default {
       
       // Output
 
-      return user ? serviceLocator.userSerializer.serialize(user) : Boom.notFound('User not found');
+      return user ? serviceLocator.userSerializer.serialize(user) : Boom.notFound();
 
     } catch (err) {
       console.error(err);
@@ -108,12 +132,12 @@ export default {
 
       // Input
       const { email, password } = request.payload as any;
+      
+      // Treatment - Output
+      if (!(await LoginUser(email, password, serviceLocator)))
+        throw Boom.unauthorized();
 
-      // Treatment
-      const user = await LoginUser(email, password, serviceLocator);
-
-      // Output
-      return h.response().code(user ? 200 : 401).takeover();
+      return h.response().code(CODE_RETURN_SUCCESS);
 
     } catch (err) {
       console.error(err);
