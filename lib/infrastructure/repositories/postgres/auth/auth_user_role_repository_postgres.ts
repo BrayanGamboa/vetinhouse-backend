@@ -29,6 +29,32 @@ export default class extends RoleUserRepository {
       throw Boom.badImplementation('Error - role user repository - persist');
     }
   }
+
+  async update(roleUserId: number, fieldsUpdate: any): Promise<RoleUser> {
+    try {
+      const [seqRoleUserBefore] = await this.getByFilter({ id: roleUserId });
+      if (!seqRoleUserBefore) throw Boom.notFound('User not found');
+
+      fieldsUpdate = {
+        ...seqRoleUserBefore,
+        ...fieldsUpdate
+      }
+      fieldsUpdate.info = {
+        ...seqRoleUserBefore.info,
+        updated_at: new Date().toISOString()
+      }
+
+      fieldsUpdate = convertCamelToSnakeCase(fieldsUpdate);
+
+      return await mix_role.update(fieldsUpdate, {
+        where: { id: roleUserId }
+      });
+    } catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('Error - role user repository - update');
+    }
+  }
+
   async find(): Promise<RoleUser[]> {
     try {
       const seqRoleUsers = await mix_role.findAll();
@@ -69,16 +95,10 @@ export default class extends RoleUserRepository {
   async remove(roleUserId: number): Promise<RoleUser> {
     try {
       const seqRoleUser = await mix_role.findByPk(roleUserId);
-      if (seqRoleUser == null) {
-        throw Boom.notFound('Role user not found');
-      }
-      await seqRoleUser.destroy();
-      return new RoleUser(
-        seqRoleUser.id,
-        seqRoleUser.name,
-        seqRoleUser.description,
-        seqRoleUser.info
-      );
+      if (!seqRoleUser)
+        return seqRoleUser
+
+      return await seqRoleUser.destroy();
     } catch (err) {
       console.error(err);
       throw Boom.badImplementation('Error - role user repository - remove');

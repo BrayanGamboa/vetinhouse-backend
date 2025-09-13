@@ -39,6 +39,20 @@ export default {
         },
       },
       {
+        method: 'PATCH',
+        path: `${pathBase}/{id}`,
+        handler: UsersController.updateUser,
+        options: {
+          description: 'Update user',
+          tags: ['api', 'Users'],
+          validate: {
+            params: Joi.object({
+              id: Joi.string().required().description('The id of the user')
+            })
+          }
+        },
+      },
+      {
         method: 'GET',
         path: `${pathBase}/{id}`,
         handler: UsersController.getUserById,

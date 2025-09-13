@@ -35,17 +35,33 @@ export default class extends UserRepository {
       );
     } catch (err) {
       console.error(err);
-      throw Boom.badImplementation('Error creating user');
+      throw Boom.badImplementation('Error - creating user - persist');
     }
   }
 
   async update(userId: string, fieldsUpdate: any): Promise<User> {
     try {
+      const [seqUserBefore] = await this.getByFilter({ document: userId });
+      if (!seqUserBefore) throw Boom.notFound();
 
-      return new User();
+      fieldsUpdate = {
+        ...seqUserBefore,
+        ...fieldsUpdate
+      }
+
+      fieldsUpdate.info = {
+        ...seqUserBefore.info,
+        updated_at: new Date().toISOString()
+      };
+
+      fieldsUpdate = convertCamelToSnakeCase(fieldsUpdate);
+
+      return await auth_user.update(fieldsUpdate, {
+        where: { document: userId }
+      });
     } catch (err) {
       console.error(err);
-      throw Boom.badImplementation('Error updating user');
+      throw Boom.badImplementation('Error - user repository - update');
     }
   }
 
@@ -73,7 +89,7 @@ export default class extends UserRepository {
       return;
     } catch (err) {
       console.error(err);
-      throw Boom.badImplementation('Error getting user by filter');
+      throw Boom.badImplementation('Error - user repository - getByFilter');
     }
   }
 
@@ -83,7 +99,7 @@ export default class extends UserRepository {
       return await seqUser.destroy(seqUser);
     } catch (err) {
       console.error(err);
-      throw Boom.badImplementation('Error deleting user');
+      throw Boom.badImplementation('Error - user repository - remove');
     }
   }
 
