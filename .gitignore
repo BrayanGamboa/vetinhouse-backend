@@ -62,3 +62,4 @@ typings/
 .idea
 *.iml
 
+DB - VetInHouse.session.sql
