@@ -3,10 +3,11 @@ import ListUsers from '../../../../application/use_cases/auth/user/ListUsers';
 import CreateUser from '../../../../application/use_cases/auth/user/CreateUser';
 import GetUser from '../../../../application/use_cases/auth/user/GetUser';
 import DeleteUser from '../../../../application/use_cases/auth/user/DeleteUser';
+import UpdateUser from '../../../../application/use_cases/auth/user/UpdateUser';
 import LoginUser from '../../../../application/use_cases/auth/user/LoginUser';
 
 import { Request, ResponseToolkit } from "@hapi/hapi";
-import { CODE_RETURN_SUCCESS } from '../../../../infrastructure/config/constants';
+import { CODE_NOT_CONTENT_SUCCESS, CODE_RETURN_SUCCESS } from '../../../../infrastructure/config/constants';
 
 export default {
 
@@ -25,7 +26,6 @@ export default {
       return serviceLocator.userSerializer.serialize(user);
     } catch (err) {
       console.error(err);
-      
       if (Boom.isBoom(err))
         return h.response(err.output.payload).code(err.output.statusCode);
 
@@ -43,7 +43,7 @@ export default {
       const userId = request.params.id;
 
       // Treatment
-      await serviceLocator.userRepository.update(userId, fields);
+      await UpdateUser(userId, fields, serviceLocator);
 
       // Output
       return h.response().code(CODE_RETURN_SUCCESS);
@@ -68,7 +68,6 @@ export default {
       return users ? users.map(serviceLocator.userSerializer.serialize) : Boom.notFound();
     } catch (err) {
       console.error(err);
-
       if (Boom.isBoom(err))
         return h.response(err.output.payload).code(err.output.statusCode);
 
@@ -114,10 +113,9 @@ export default {
       await DeleteUser(userId, serviceLocator);
 
       // Output
-      return h.response().code(204);
+      return h.response().code(CODE_NOT_CONTENT_SUCCESS);
     } catch (err) {
       console.error(err);
-
       if (Boom.isBoom(err))
         return h.response(err.output.payload).code(err.output.statusCode);
       
@@ -141,7 +139,6 @@ export default {
 
     } catch (err) {
       console.error(err);
-
       if (Boom.isBoom(err))
         return h.response(err.output.payload).code(err.output.statusCode);
 

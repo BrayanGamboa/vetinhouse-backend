@@ -2,13 +2,15 @@ import Boom from '@hapi/boom';
 import ListDocumentType from '../../../application/use_cases/mix/type_document/ListTypeDocument';
 import CreateDocumentType from '../../../application/use_cases/mix/type_document/CreateTypeDocument';
 import GetDocumentType from '../../../application/use_cases/mix/type_document/GetTypeDocument';
-
+import DeleteTypeDocument from '../../../application/use_cases/mix/type_document/DeleteTypeDocument';
+import UpdateTypeDocument from '../../../application/use_cases/mix/type_document/UpdateTypeDocument';
 import { Request, ResponseToolkit } from "@hapi/hapi";
+import { CODE_NOT_CONTENT_SUCCESS, CODE_RETURN_SUCCESS } from '../../../infrastructure/config/constants';
 
 export default {
 
   async createDocumentType(request: Request, h: ResponseToolkit) {
-    try{
+    try {
       // Context
       const serviceLocator = request.server.app.serviceLocator;
 
@@ -29,8 +31,31 @@ export default {
     }
   },
 
+  async updateDocumentType(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
+
+      // Input
+      const documentTypeId = request.params.id;
+      const fields = request.payload;
+      
+      // Treatment
+      await UpdateTypeDocument(documentTypeId, fields, serviceLocator);
+
+      // Output
+      return h.response().code(CODE_RETURN_SUCCESS);
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
+      throw Boom.badImplementation('An internal server error occurred - updateDocumentType');
+    }
+  },
+
   async findDocumentTypes(request: Request) {
-    try{
+    try {
       const serviceLocator = request.server.app.serviceLocator;
 
       // Treatment
@@ -38,40 +63,57 @@ export default {
 
       // Output
       return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
-    }catch (err) {
+    } catch (err) {
       console.error(err);
       throw Boom.badImplementation('An internal server error occurred - findDocumentTypes');
     }
   },
 
-  async getDocumentType(request: Request) {
+  async getDocumentType(request: Request, h: ResponseToolkit) {
 
-    // Context
-    const serviceLocator = request.server.app.serviceLocator;
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-    // Input
-    const roleUserId = request.params.id;
+      // Input
+      const roleUserId = request.params.id;
 
-    // Treatment
-    const user = await GetDocumentType(roleUserId, serviceLocator);
+      // Treatment
+      const user = await GetDocumentType(roleUserId, serviceLocator);
 
-    // Output
-    return user ? serviceLocator.roleUserSerializer.serialize(user): Boom.notFound('Document type not found');
+      // Output
+      return user ? serviceLocator.roleUserSerializer.serialize(user) : Boom.notFound('Document type not found');
+
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
+      throw Boom.badImplementation('An internal server error occurred - findDocumentTypes');
+    }
   },
 
-  // async deleteUser(request: Request, h: ResponseToolkit) {
+  async deleteDocumentType(request: Request, h: ResponseToolkit) {
+    try {
+      // Context
+      const serviceLocator = request.server.app.serviceLocator;
 
-  //   // Context
-  //   const serviceLocator = request.server.app.serviceLocator;
+      // Input
+      const documentTypeId = request.params.id;
 
-  //   // Input
-  //   const userId = request.params.id;
+      // Treatment
+      await DeleteTypeDocument(documentTypeId, serviceLocator);
 
-  //   // Treatment
-  //   await DeleteUser(userId, serviceLocator);
+      // Output
+      return h.response().code(CODE_NOT_CONTENT_SUCCESS);
 
-  //   // Output
-  //   return h.response().code(204);
-  // },
+    } catch (err) {
+      console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
+      throw Boom.badImplementation('An internal server error occurred - findDocumentTypes');
+    }
+  },
 
 };

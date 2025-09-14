@@ -39,6 +39,20 @@ export default {
         },
       },
       {
+        method: 'PATCH',
+        path: `${pathBase}/{id}`,
+        handler: DocumentTypeController.updateDocumentType,
+        options: {
+          description: 'Update a document type by id',
+          tags: ['Document type', 'api'],
+          validate: {
+            params: Joi.object({
+              id: Joi.number().required().description('The id of the user')
+            })
+          },
+        },
+      },
+      {
         method: 'GET',
         path: `${pathBase}/{id}`,
         handler: DocumentTypeController.getDocumentType,
@@ -55,15 +69,15 @@ export default {
           },
         },
       },
-      // {
-      //   method: 'DELETE',
-      //   path: `${pathBase}/{id}`,
-      //   handler: DocumentTypeController.deleteUser,
-      //   options: {
-      //     description: 'Delete a user',
-      //     tags: ['Document type', 'api'],
-      //   },
-      // },
+      {
+        method: 'DELETE',
+        path: `${pathBase}/{id}`,
+        handler: DocumentTypeController.deleteDocumentType,
+        options: {
+          description: 'Delete a document type by id',
+          tags: ['Document type', 'api'],
+        },
+      },
     ]);
   }
 };
