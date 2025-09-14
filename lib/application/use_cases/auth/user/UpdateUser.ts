@@ -4,10 +4,12 @@ import RoleUserRepository from '../../../../domain/auth/role_user/RoleUserReposi
 import Boom from '@hapi/boom';
 
 export default async (
-  fieldsUpdate: any,
   userId: string,
+  fieldsUpdate: any,
   { userRepository, documentTypeRepository, roleUserRepository }: { userRepository: UserRepository, documentTypeRepository: DocumentTypeRepository, roleUserRepository: RoleUserRepository }
 ) => {
+  if (!(await userRepository.getByFilter({ document: userId })))
+    throw Boom.forbidden("User not found");
   
   if (fieldsUpdate?.email) {
     if (await userRepository.getByFilter({ email: fieldsUpdate.email }))

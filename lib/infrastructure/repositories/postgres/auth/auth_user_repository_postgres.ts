@@ -40,8 +40,8 @@ export default class extends UserRepository {
 
   async update(userId: string, fieldsUpdate: any): Promise<User> {
     try {
+      // Since getByFilter returns an array [], we access position 0.
       const [seqUserBefore] = await this.getByFilter({ document: userId });
-      if (!seqUserBefore) throw Boom.notFound();
 
       fieldsUpdate = {
         ...seqUserBefore,
@@ -76,7 +76,7 @@ export default class extends UserRepository {
         return seqUser.map((seqUser: any) => new User(
           seqUser.document,
           seqUser.name,
-          seqUser.lastName,
+          seqUser.last_name,
           seqUser.email,
           seqUser.password,
           seqUser.document_type_id,

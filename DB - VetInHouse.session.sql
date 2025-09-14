@@ -44,18 +44,8 @@ CREATE TABLE auth.auth_user(
 
 SELECT * FROM user;
 
-ALTER TABLE auth.user
-  RENAME TO auth_user;
-
 SELECT table_schema, table_name
 FROM information_schema.tables
-WHERE table_name LIKE '%use%'
+WHERE table_name LIKE '%aut%'
 
-SELECT * FROM public.users
-
-DROP TABLE public.users
-
-
-
-
-SELECT * FROM mix.mix_role;
+SELECT * FROM auth.auth_user;

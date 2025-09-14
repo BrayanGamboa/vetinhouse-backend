@@ -3,6 +3,9 @@ import RoleUserRepository from "../../../../domain/auth/role_user/RoleUserReposi
 import Boom from "@hapi/boom";
 
 export default async (id: number, fieldsUpdate: any, { roleUserRepository }: { roleUserRepository: RoleUserRepository }): Promise<RoleUser> => {
+  if (!(await roleUserRepository.getByFilter({ id })))
+    throw Boom.forbidden("Role user not found");
+  
   if (fieldsUpdate?.id) {
     if (await roleUserRepository.getByFilter({ id: fieldsUpdate.id }))
       throw Boom.forbidden("Role user id already in use");

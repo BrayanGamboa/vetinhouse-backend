@@ -32,8 +32,8 @@ export default class extends RoleUserRepository {
 
   async update(roleUserId: number, fieldsUpdate: any): Promise<RoleUser> {
     try {
+      // Since getByFilter returns an array [], we access position 0.
       const [seqRoleUserBefore] = await this.getByFilter({ id: roleUserId });
-      if (!seqRoleUserBefore) throw Boom.notFound('User not found');
 
       fieldsUpdate = {
         ...seqRoleUserBefore,
@@ -43,7 +43,7 @@ export default class extends RoleUserRepository {
         ...seqRoleUserBefore.info,
         updated_at: new Date().toISOString()
       }
-
+      
       fieldsUpdate = convertCamelToSnakeCase(fieldsUpdate);
 
       return await mix_role.update(fieldsUpdate, {

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import TypeDocument from "./TypeDocument";
 import DocumentType from "./TypeDocument";
 
 export default class {
@@ -7,15 +8,11 @@ export default class {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  merge(domainDocumentType: DocumentType): Promise<DocumentType> {
+  update(documentTypeId: number, fields: any): Promise<TypeDocument> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  remove(documentTypeId: number): Promise<DocumentType> {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-  }
-
-  get(documentTypeId: number): Promise<DocumentType> {
+  remove(documentTypeId: number): Promise<TypeDocument> {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 

@@ -30,6 +30,31 @@ export default class extends TypeDocumentRepository {
     }
   }
 
+  async update(documentTypeId: number, fieldsUpdate: any): Promise<TypeDocument> {
+    try {
+      // Since getByFilter returns an array [], we access position 0.
+      const seqDocumentTypeBefore = await this.getByFilter({ id: documentTypeId });
+
+      fieldsUpdate = {
+        ...seqDocumentTypeBefore,
+        ...fieldsUpdate
+      }
+      fieldsUpdate.info = {
+        ...seqDocumentTypeBefore.info,
+        updated_at: new Date().toISOString()
+      }
+
+      fieldsUpdate = convertCamelToSnakeCase(fieldsUpdate);
+
+      return await mix_document_type.update(fieldsUpdate, {
+        where: { id: documentTypeId }
+      });
+    } catch (err) {
+      console.error(err);
+      throw Boom.badImplementation('Error - role user repository - update');
+    }
+  }
+
   async getByFilter(filter: any): Promise<any> {
     try {
       filter = convertCamelToSnakeCase(filter);
@@ -53,16 +78,8 @@ export default class extends TypeDocumentRepository {
   async remove(documentTypeId: number): Promise<TypeDocument> {
     try {
       const seqDocumentType = await mix_document_type.findByPk(documentTypeId);
-      if (seqDocumentType == null) {
-        throw Boom.badImplementation('Document type not found');
-      }
-      await seqDocumentType.destroy();
-      return new TypeDocument(
-        seqDocumentType.id,
-        seqDocumentType.name,
-        seqDocumentType.description,
-        seqDocumentType.info
-      );
+      if (!seqDocumentType) return seqDocumentType;
+      return await seqDocumentType.destroy();
     } catch (err) {
       console.error(err);
       throw Boom.badImplementation('Error - document type repository - remove');

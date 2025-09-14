@@ -17,11 +17,11 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "author": "Jérémy Buget",
-  "license": "MIT",
+  "author": "Brayan Gamboa",
+  "license": "",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/BrayanGamboa"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
