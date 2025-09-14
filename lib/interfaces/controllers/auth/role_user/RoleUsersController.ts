@@ -5,7 +5,7 @@ import UpdateRoleUser from '../../../../application/use_cases/auth/role_user/Upd
 import GetRoleUser from '../../../../application/use_cases/auth/role_user/GetRoleUser';
 import DeleteRoleUser from '../../../../application/use_cases/auth/role_user/DeleteRoleUser';
 import { Request, ResponseToolkit } from "@hapi/hapi";
-import { CODE_RETURN_SUCCESS } from '../../../../infrastructure/config/constants';
+import { CODE_NOT_CONTENT_SUCCESS, CODE_RETURN_SUCCESS } from '../../../../infrastructure/config/constants';
 
 export default {
   async createRoleUser(request: Request, h: ResponseToolkit) {
@@ -53,7 +53,7 @@ export default {
     }
   },
 
-  async findRoleUsers(request: Request) {
+  async findRoleUsers(request: Request, h: ResponseToolkit) {
     try {
       const serviceLocator = request.server.app.serviceLocator;
 
@@ -64,6 +64,9 @@ export default {
       return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
     } catch (err) {
       console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
       throw Boom.badImplementation('An internal server error occurred - findRoleUsers');
     }
   },
@@ -102,7 +105,7 @@ export default {
       await DeleteRoleUser(userId, serviceLocator);
 
       // Output
-      return h.response().code(CODE_RETURN_SUCCESS);
+      return h.response().code(CODE_NOT_CONTENT_SUCCESS);
     } catch (err) {
       console.error(err);
       if (Boom.isBoom(err)) {
