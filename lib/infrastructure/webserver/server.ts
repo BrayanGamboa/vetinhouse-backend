@@ -5,6 +5,9 @@ import HapiSwagger from 'hapi-swagger';
 import Package from '../../../package.json';
 import { buildBeans, ServiceLocator } from '../../infrastructure/config/service-locator';
 import pino from 'hapi-pino';
+import { CommonErrorResponses } from '../../application/schemas/ErrorSchema';
+import Joi from 'joi';
+
 // eslint-disable-next-line
 const Blipp = require('blipp'); //Este machetazo es necesario porque Blipp no tiene tipos para TS.
 
@@ -23,6 +26,9 @@ const createServer = async () => {
       }
     }
   });
+
+  server.validator(Joi);
+
   await server.register([
     Blipp,
     Inert,
@@ -34,12 +40,13 @@ const createServer = async () => {
           title: 'API Documentation',
           version: Package.version,
         },
+        responses: CommonErrorResponses,
         // tags: [
         //   { name: 'Document type', description: 'Operations about document types' },
         //   { name: 'Role user', description: 'Operations about user roles' },
         //   { name: 'Users', description: 'Authentication endpoints' },
         // ]
-      }
+      },
     },
     {
       plugin: pino,

@@ -59,4 +59,29 @@ export const convertUpperCase = (text: string): string => {
 export interface InfoResponse {
   created_at: string;
   updated_at: string;
-}
+};
+
+export interface ScheduleResponse {
+  open_permanently: boolean;
+  monday: [
+    { start: number, finish: number }
+  ];
+  tuesday: [
+    { start: number, finish: number }
+  ];
+  wednesday: [
+    { start: number, finish: number }
+  ];
+  thursday: [
+    { start: number, finish: number }
+  ];
+  friday: [
+    { start: number, finish: number }
+  ];
+  saturday: [
+    { start: number, finish: number }
+  ];
+  sunday: [
+    { start: number, finish: number }
+  ];
+};

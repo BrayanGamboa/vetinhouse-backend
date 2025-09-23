@@ -5,7 +5,7 @@ module.exports = function(sequelize: Sequelize, dataTypes: typeof DataTypes) {
     document: {
       type: dataTypes.STRING(40),
       allowNull: false,
-      primaryKey: true
+      unique: "auth_user_document_document_type_id_uq"
     },
     role_id: {
       type: dataTypes.INTEGER,
@@ -21,7 +21,8 @@ module.exports = function(sequelize: Sequelize, dataTypes: typeof DataTypes) {
       references: {
         model: 'mix_document_type',
         key: 'id'
-      }
+      },
+      unique: "auth_user_document_document_type_id_uq"
     },
     name: {
       type: dataTypes.STRING(255),
@@ -43,12 +44,26 @@ module.exports = function(sequelize: Sequelize, dataTypes: typeof DataTypes) {
     info: {
       type: dataTypes.JSON,
       allowNull: false
+    },
+    user_code: {
+      autoIncrement: true,
+      type: dataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
     }
   }, {
     tableName: 'auth_user',
     schema: 'auth',
     timestamps: false,
     indexes: [
+      {
+        name: "auth_user_document_document_type_id_uq",
+        unique: true,
+        fields: [
+          { name: "document" },
+          { name: "document_type_id" },
+        ]
+      },
       {
         name: "auth_user_email_uq",
         unique: true,
@@ -60,7 +75,7 @@ module.exports = function(sequelize: Sequelize, dataTypes: typeof DataTypes) {
         name: "auth_user_pk",
         unique: true,
         fields: [
-          { name: "document" },
+          { name: "user_code" },
         ]
       },
     ]
