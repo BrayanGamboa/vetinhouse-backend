@@ -1,24 +1,24 @@
-import TypeDocumentRepository from '../../../../domain/mix/type_document/TypeDocumentRepository';
+import ServiceRepository from "../../../../domain/services/service/ServiceRepository";
 import Boom from '@hapi/boom';
 
 export default async (
   id: number,
   fields: any,
-  { documentTypeRepository }: { documentTypeRepository: TypeDocumentRepository }
+  { serviceRepository }: { serviceRepository: ServiceRepository }
 ) => {
 
-  if (!(await documentTypeRepository.getByFilter(id)))
-    throw Boom.notFound("Document type not found")
+  if (!(await serviceRepository.getByFilter(id)))
+    throw Boom.notFound("Service not found")
 
   if (fields?.id) {
-    if (await documentTypeRepository.getByFilter({ id : fields.id }))
-      throw Boom.forbidden("Document type with this ID already exists, please choose another");
+    if (await serviceRepository.getByFilter({ id : fields.id }))
+      throw Boom.forbidden("Service with this ID already exists, please choose another");
   }
 
   if (fields?.name) {
-    if (await documentTypeRepository.getByFilter({ name: fields.name }))
-      throw Boom.forbidden("Document type with this name already exists, please choose another");
+    if (await serviceRepository.getByFilter({ name: fields.name }))
+      throw Boom.forbidden("Service with this name already exists, please choose another");
   }
 
-  return await documentTypeRepository.update(id, fields);
+  return await serviceRepository.update(id, fields);
 };

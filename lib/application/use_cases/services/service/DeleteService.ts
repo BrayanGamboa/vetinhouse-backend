@@ -1,8 +1,9 @@
-import TypeDocumentRepository from '../../../../domain/mix/type_document/TypeDocumentRepository';
+import ServiceRepository from "../../../../domain/services/service/ServiceRepository";
 import Boom from '@hapi/boom';
 
-export default async (documentTypeId: number, { documentTypeRepository }: { documentTypeRepository: TypeDocumentRepository}) => {
-  if(!(await documentTypeRepository.getByFilter({id: documentTypeId})))
+export default async (documentTypeId: number, { serviceRepository }: { serviceRepository: ServiceRepository}) => {
+  if(!(await serviceRepository.getByFilter({id: documentTypeId})))
     throw Boom.notFound('Document type not found');
-  return await documentTypeRepository.remove(documentTypeId);
+  
+  return await serviceRepository.remove(documentTypeId);
 };

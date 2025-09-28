@@ -6,52 +6,60 @@ import JwtAccessTokenManager from '../security/JwtAccessTokenManager';
 import UserSerializer from '../../interfaces/serializers/auth/UserSerializer';
 import RoleUserSerializer from '../../interfaces/serializers/auth/RoleUserSerializer';
 import MixDocumentTypeSerializer from '../../interfaces/serializers/mix/DocumentTypeSerializer';
+import ServicesServiceSerializer from '../../interfaces/serializers/services/ServiceSerializer';
 
 // Import de repositorios
 import AuthUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_repository_postgres';
 import AuthRoleUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_role_repository_postgres';
 import MixDocumentTypeRepositoryPostgres from '../repositories/postgres/mix/mix_type_document_repository_postgres';
+import ServicesServiceRepositoryPostgres from '../repositories/postgres/services/services_service_repository_postgres';
 
 export interface ServiceLocator {
   accessTokenManager: JwtAccessTokenManager;
-  // Repositorios
+  // Repositories
   userRepository: any;
   roleUserRepository: any;
   documentTypeRepository: any;
-  
-  // Serializadores 
+  serviceRepository: any;
+  // Serializers 
   userSerializer: UserSerializer;
   roleUserSerializer: RoleUserSerializer;
   documentTypeSerializer: MixDocumentTypeSerializer;
-  
+  serviceSerializer: ServicesServiceSerializer;
 }
 
 export function buildBeans(): ServiceLocator {
-  const beans: ServiceLocator = {
+  return {
     accessTokenManager: new JwtAccessTokenManager(),
 
-    // Repositorios
-    userRepository: new AuthUserRepositoryPostgres(),
-    roleUserRepository: new AuthRoleUserRepositoryPostgres(),
-    documentTypeRepository: new MixDocumentTypeRepositoryPostgres(),
+    // Repositories
+    ...createRepositories(environment.dialect),
 
-    // Serializadores
+    // Serializers
     userSerializer: new UserSerializer(),
     roleUserSerializer: new RoleUserSerializer(),
     documentTypeSerializer: new MixDocumentTypeSerializer(),
-
+    serviceSerializer: new ServicesServiceSerializer(),
   };
+}
 
-  // Selección del repositorio según dialecto
-  if (environment.dialect === constants.SUPPORTED_DATABASE.MONGO) {
-    // beans.userRepository = new AuthUserRepositoryMongo();
-  } else if (environment.dialect === constants.SUPPORTED_DATABASE.POSTGRES) {
-    beans.userRepository = new AuthUserRepositoryPostgres();
-    beans.roleUserRepository = new AuthRoleUserRepositoryPostgres();
-    beans.documentTypeRepository = new MixDocumentTypeRepositoryPostgres();
-  } else {
-    throw new Error(`Unsupported dialect: ${environment.dialect}`);
+function createRepositories(dialect: string) {
+  switch (dialect) {
+    case constants.SUPPORTED_DATABASE.POSTGRES:
+      return {
+        userRepository: new AuthUserRepositoryPostgres(),
+        roleUserRepository: new AuthRoleUserRepositoryPostgres(),
+        documentTypeRepository: new MixDocumentTypeRepositoryPostgres(),
+        serviceRepository: new ServicesServiceRepositoryPostgres(),
+      };
+
+    case constants.SUPPORTED_DATABASE.MONGO:
+      throw new Error('MongoDB repositories not implemented yet');
+
+    case constants.SUPPORTED_DATABASE.IN_MEMORY:
+      throw new Error('In-memory repositories not implemented yet');
+
+    default:
+      throw new Error(`Unsupported database dialect: ${dialect}`);
   }
-
-  return beans;
 }

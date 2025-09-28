@@ -1,6 +1,6 @@
-import DocumentTypeRepository from "../../../../domain/mix/type_document/TypeDocumentRepository";
-import DocumentType from "../../../../domain/mix/type_document/TypeDocument";
+import ServiceRepository from "../../../../domain/services/service/ServiceRepository";
+import DocumentType from "../../../../domain/services/service/Service";
 
-export default async ({ documentTypeRepository }: { documentTypeRepository: DocumentTypeRepository }): Promise<DocumentType[]> => { 
-  return await documentTypeRepository.getByFilter({});
+export default async ({ serviceRepository }: { serviceRepository: ServiceRepository }): Promise<DocumentType[]> => { 
+  return await serviceRepository.getByFilter({});
 };

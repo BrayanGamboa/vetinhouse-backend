@@ -20,8 +20,4 @@ export default class {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  find(): Promise<DocumentType[]> {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-  }
-
 };
