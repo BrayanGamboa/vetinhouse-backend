@@ -11,13 +11,13 @@ export default {
       const serviceLocator = request.server.app.serviceLocator;
 
       // Input
-      const { id, name, description } = request.payload as { id: number, name: string; description: string };
+      const { id, name, description, value, scheduleServicioId } = request.payload as { id: number, name: string; description: string, value: number, scheduleServicioId: number };
 
       // Treatment
-      const documentType = await CreateService(id, name, description, serviceLocator);
+      const service = await CreateService(id, name, description, value, scheduleServicioId, serviceLocator);
 
       // Output
-      return serviceLocator.roleUserSerializer.serialize(documentType);
+      return serviceLocator.roleUserSerializer.serialize(service);
     } catch (err) {
       console.error(err);
       if (Boom.isBoom(err)) {
@@ -27,22 +27,29 @@ export default {
     }
   },
 
-  async findServices(request: Request) {
+  async findServices(request: Request, h: ResponseToolkit) {
     try {
       const serviceLocator = request.server.app.serviceLocator;
 
       // Treatment
-      const rolesUser = await ListService(serviceLocator);
+      const service = await ListService(serviceLocator);
 
       // Output
-      return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
+      if (service)
+        return service.map(serviceLocator.serviceSerializer.serialize);
+      
+      throw Boom.notFound();
+      
     } catch (err) {
       console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
       throw Boom.badImplementation('An internal server error occurred - findServices');
     }
   },
 
-  async updateServices(request: Request) {
+  async updateServices(request: Request, h: ResponseToolkit) {
     try {
       const serviceLocator = request.server.app.serviceLocator;
 
@@ -53,11 +60,14 @@ export default {
       return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
     } catch (err) {
       console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
       throw Boom.badImplementation('An internal server error occurred - findServices');
     }
   },
 
-  async deleteServices(request: Request) {
+  async deleteServices(request: Request, h: ResponseToolkit) {
     try {
       const serviceLocator = request.server.app.serviceLocator;
 
@@ -68,6 +78,9 @@ export default {
       return rolesUser.map(serviceLocator.roleUserSerializer.serialize);
     } catch (err) {
       console.error(err);
+      if (Boom.isBoom(err)) {
+        return h.response(err.output.payload).code(err.output.statusCode);
+      }
       throw Boom.badImplementation('An internal server error occurred - findServices');
     }
   },

@@ -1,13 +1,12 @@
 import { Server } from '@hapi/hapi';
 import ServiceController from '../../controllers/services/serviceController';
-import { DocumentTypePayloadSchema, DocumentTypeListResponseSchema, DocumentTypeResponseSchema } from '../../../application/schemas/mix/DocumentTypeSchema';
-import Joi from 'joi';
+import { ServicePayloadSchema, ServiceResponseSchema, ServiceListResponseSchema} from '../../../application/schemas/services/ServiceSchema';
 import { ErrorResponseSchema } from '../../../application/schemas/ErrorSchema';
 
-const pathBase = '/document_type';
+const pathBase = '/service';
 
 export default {
-  name: 'Document type',
+  name: 'Service',
   version: '1.0.0',
   register: async (server: Server) => {
 
@@ -17,11 +16,11 @@ export default {
         path: pathBase,
         handler: ServiceController.findServices,
         options: {
-          description: 'List all document types',
+          description: 'List all services',
           tags: ['Document type', 'api'],
           response: {
             status: {
-              200: DocumentTypeListResponseSchema,
+              200: ServiceListResponseSchema,
               401: ErrorResponseSchema,
               404: ErrorResponseSchema,
               500: ErrorResponseSchema
@@ -34,14 +33,14 @@ export default {
         path: pathBase,
         handler: ServiceController.createService,
         options: {
-          description: 'Create a document type',
+          description: 'Create a service',
           tags: ['Document type', 'api'],
           validate: {
-            payload: DocumentTypePayloadSchema
+            payload: ServicePayloadSchema
           },
           response: {
             status: {
-              200: DocumentTypeResponseSchema,
+              200: ServiceResponseSchema,
               401: ErrorResponseSchema,
               404: ErrorResponseSchema,
               500: ErrorResponseSchema
@@ -49,59 +48,7 @@ export default {
           }
         },
       },
-      // {
-      //   method: 'PATCH',
-      //   path: `${pathBase}/{id}`,
-      //   handler: serviceController,
-      //   options: {
-      //     description: 'Update a document type by id',
-      //     tags: ['Document type', 'api'],
-      //     validate: {
-      //       params: Joi.object({
-      //         id: Joi.number().required().description('The id of the user')
-      //       })
-      //     },
-      //     response: {
-      //       emptyStatusCode: 200,
-      //       status: {
-      //         401: ErrorResponseSchema,
-      //         404: ErrorResponseSchema,
-      //         500: ErrorResponseSchema
-      //       }
-      //     },
-      //   },
-      // },
-      // {
-      //   method: 'GET',
-      //   path: `${pathBase}/{id}`,
-      //   handler: serviceController.getDocumentType,
-      //   options: {
-      //     description: 'Get a document type by id',
-      //     tags: ['Document type', 'api'],
-      //     response: {
-      //       status: {
-      //         200: DocumentTypeListResponseSchema,
-      //         401: ErrorResponseSchema,
-      //         404: ErrorResponseSchema,
-      //         500: ErrorResponseSchema
-      //       }
-      //     },
-      //     validate: {
-      //       params: Joi.object({
-      //         id: Joi.number().required().description('The id of the user')
-      //       })
-      //     },
-      //   },
-      // },
-      // {
-      //   method: 'DELETE',
-      //   path: `${pathBase}/{id}`,
-      //   handler: serviceController.deleteDocumentType,
-      //   options: {
-      //     description: 'Delete a document type by id',
-      //     tags: ['Document type', 'api'],
-      //   },
-      // },
+
     ]);
   }
 };

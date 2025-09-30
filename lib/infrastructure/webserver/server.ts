@@ -72,7 +72,7 @@ const createServer = async () => {
     require('../../interfaces/routes/auth/user').default,
     require('../../interfaces/routes/auth/role_user').default,
     require('../../interfaces/routes/mix/document_type').default,
-    require('../../interfaces/routes/services/services_schedule')
+    require('../../interfaces/routes/services/services').default
   ]);
   /* eslint-enable */
   server.app.serviceLocator = buildBeans();

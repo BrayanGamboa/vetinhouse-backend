@@ -6,6 +6,8 @@ export default async (
   id: number,
   name: string,
   description: string,
+  value: number,
+  scheduleServicioId: number,
   { serviceRepository }: { serviceRepository: ServiceRepository }
 ) => {
 
@@ -15,7 +17,7 @@ export default async (
   if (await serviceRepository.getByFilter({ name }))
     throw Boom.forbidden("Service with this name already exists, please choose another");
 
-  const service = new Service(id, name, description, {
+  const service = new Service(id, name, description, value ?? null, scheduleServicioId, {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   });

@@ -9,12 +9,14 @@ export default class extends ServiceRepository {
   async persist(domain_service: Service) {
     try {
       const service: any = convertCamelToSnakeCase(domain_service);
-      const { id, name, description, info } = service;
+      const { id, name, description, value, scheduleServicioId, info } = service;
 
       const seqCreateService = await services_service.create({
         id,
         name,
         description,
+        value, 
+        scheduleServicioId,
         info
       });
 
@@ -22,6 +24,8 @@ export default class extends ServiceRepository {
         seqCreateService.id,
         seqCreateService.name,
         seqCreateService.description,
+        seqCreateService.value,
+        seqCreateService.scheduleServicioId ?? null,
         seqCreateService.info
       );
     } catch (err) {
@@ -29,31 +33,6 @@ export default class extends ServiceRepository {
       throw Boom.badImplementation('Error - service repository - persist');
     }
   }
-
-  // async update(documentTypeId: number, fieldsUpdate: any): Promise<TypeDocument> {
-  //   try {
-  //     // Since getByFilter returns an array [], we access position 0.
-  //     const seqDocumentTypeBefore = await this.getByFilter({ id: documentTypeId });
-
-  //     fieldsUpdate = {
-  //       ...seqDocumentTypeBefore,
-  //       ...fieldsUpdate
-  //     }
-  //     fieldsUpdate.info = {
-  //       ...seqDocumentTypeBefore.info,
-  //       updated_at: new Date().toISOString()
-  //     }
-
-  //     fieldsUpdate = convertCamelToSnakeCase(fieldsUpdate);
-
-  //     return await mix_document_type.update(fieldsUpdate, {
-  //       where: { id: documentTypeId }
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //     throw Boom.badImplementation('Error - role user repository - update');
-  //   }
-  // }
 
   async getByFilter(filter: any): Promise<any> {
     try {
@@ -65,6 +44,8 @@ export default class extends ServiceRepository {
           seqService.id,
           seqService.name,
           seqService.description,
+          seqService.value,
+          seqService.scheduleServicioId ?? null,
           seqService.info
         ));
       }
@@ -74,16 +55,5 @@ export default class extends ServiceRepository {
       throw Boom.badImplementation('Error - service repository - getByFilter');
     }
   }
-
-  // async remove(documentTypeId: number): Promise<TypeDocument> {
-  //   try {
-  //     const seqDocumentType = await mix_document_type.findByPk(documentTypeId);
-  //     if (!seqDocumentType) return seqDocumentType;
-  //     return await seqDocumentType.destroy();
-  //   } catch (err) {
-  //     console.error(err);
-  //     throw Boom.badImplementation('Error - document type repository - remove');
-  //   }
-  // }
 
 }
