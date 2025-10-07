@@ -5,12 +5,14 @@ const {
   auth_user,
   mix_document_type,
   mix_role,
-  services_service
+  services_service,
+  services_schedule
 } = initModels(sequelize);
 
 export default {
   auth_user,
   mix_document_type,
   mix_role,
-  services_service
+  services_service,
+  services_schedule
 };

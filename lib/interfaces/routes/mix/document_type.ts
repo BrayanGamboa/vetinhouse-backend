@@ -35,7 +35,7 @@ export default {
         handler: DocumentTypeController.createDocumentType,
         options: {
           description: 'Create a document type',
-          tags: ['Document type', 'api'],
+          tags: ['api', 'Document type'],
           validate: {
             payload: DocumentTypePayloadSchema
           },
@@ -55,7 +55,7 @@ export default {
         handler: DocumentTypeController.updateDocumentType,
         options: {
           description: 'Update a document type by id',
-          tags: ['Document type', 'api'],
+          tags: ['api', 'Document type'],
           validate: {
             params: Joi.object({
               id: Joi.number().required().description('The id of the user')
@@ -77,7 +77,7 @@ export default {
         handler: DocumentTypeController.getDocumentType,
         options: {
           description: 'Get a document type by id',
-          tags: ['Document type', 'api'],
+          tags: ['api', 'Document type'],
           response: {
             status: {
               200: DocumentTypeListResponseSchema,
@@ -99,7 +99,7 @@ export default {
         handler: DocumentTypeController.deleteDocumentType,
         options: {
           description: 'Delete a document type by id',
-          tags: ['Document type', 'api'],
+          tags: ['api', 'Document type'],
         },
       },
     ]);

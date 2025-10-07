@@ -58,7 +58,7 @@ export default {
         handler: UsersController.getUserById,
         options: {
           description: 'Get a user by its {id}',
-          tags: ['api'],
+          tags: ['api', 'Users'],
           response:{
             schema: UserListResponseSchema
           },
@@ -75,7 +75,7 @@ export default {
         handler: UsersController.deleteUser,
         options: {
           description: 'Delete a user',
-          tags: ['api'],
+          tags: ['api', 'Users'],
           response:{
             emptyStatusCode: 204
           },
@@ -92,7 +92,7 @@ export default {
         handler: UsersController.login,
         options: {
           description: 'Login a user',
-          tags: ['api'],
+          tags: ['api', 'Users'],
           response: {
             emptyStatusCode: 200,
             disconnectStatusCode: 401,

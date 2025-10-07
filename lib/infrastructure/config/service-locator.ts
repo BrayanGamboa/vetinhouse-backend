@@ -7,12 +7,14 @@ import UserSerializer from '../../interfaces/serializers/auth/UserSerializer';
 import RoleUserSerializer from '../../interfaces/serializers/auth/RoleUserSerializer';
 import MixDocumentTypeSerializer from '../../interfaces/serializers/mix/DocumentTypeSerializer';
 import ServicesServiceSerializer from '../../interfaces/serializers/services/ServiceSerializer';
+import ServiceScheduleSerializer from '../../interfaces/serializers/services/ServiceScheduleSerializer';
 
 // Import de repositorios
 import AuthUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_repository_postgres';
 import AuthRoleUserRepositoryPostgres from '../repositories/postgres/auth/auth_user_role_repository_postgres';
 import MixDocumentTypeRepositoryPostgres from '../repositories/postgres/mix/mix_type_document_repository_postgres';
 import ServicesServiceRepositoryPostgres from '../repositories/postgres/services/services_service_repository_postgres';
+import ServiceScheduleRepositoryPostgres from '../repositories/postgres/services/services_service_schedule_repository_postgres';
 
 export interface ServiceLocator {
   accessTokenManager: JwtAccessTokenManager;
@@ -21,11 +23,14 @@ export interface ServiceLocator {
   roleUserRepository: any;
   documentTypeRepository: any;
   serviceRepository: any;
+  serviceScheduleRepository: any;
+
   // Serializers 
   userSerializer: UserSerializer;
   roleUserSerializer: RoleUserSerializer;
   documentTypeSerializer: MixDocumentTypeSerializer;
   serviceSerializer: ServicesServiceSerializer;
+  serviceScheduleSerializer: ServiceScheduleSerializer;
 }
 
 export function buildBeans(): ServiceLocator {
@@ -40,6 +45,7 @@ export function buildBeans(): ServiceLocator {
     roleUserSerializer: new RoleUserSerializer(),
     documentTypeSerializer: new MixDocumentTypeSerializer(),
     serviceSerializer: new ServicesServiceSerializer(),
+    serviceScheduleSerializer: new ServiceScheduleSerializer(),
   };
 }
 
@@ -51,6 +57,7 @@ function createRepositories(dialect: string) {
         roleUserRepository: new AuthRoleUserRepositoryPostgres(),
         documentTypeRepository: new MixDocumentTypeRepositoryPostgres(),
         serviceRepository: new ServicesServiceRepositoryPostgres(),
+        serviceScheduleRepository: new ServiceScheduleRepositoryPostgres(),
       };
 
     case constants.SUPPORTED_DATABASE.MONGO:

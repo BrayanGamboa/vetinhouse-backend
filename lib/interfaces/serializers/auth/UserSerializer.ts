@@ -1,4 +1,5 @@
 import User from "../../../domain/auth/user/User";
+import Boom from "@hapi/boom";
 
 const _serializeSingleUser = (user: any) => {
   return {
@@ -20,7 +21,7 @@ export default class {
 
   serialize(data: User) {
     if (!data) {
-      throw new Error('Expect data to be not undefined nor null');
+      throw Boom.badData('Expect data to be not undefined nor null');
     }
     if (Array.isArray(data)) {
       return data.map(_serializeSingleUser);

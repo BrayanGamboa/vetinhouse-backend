@@ -1,6 +1,5 @@
-'use strict';
-
 import RoleUser from "../../../domain/auth/role_user/RoleUser";
+import Boom from "@hapi/boom";
 
 const _serializeSingleRoleUser = (roleUser: RoleUser) => {
   return {
@@ -18,7 +17,7 @@ export default class {
 
   serialize(data: RoleUser) {
     if (!data) {
-      throw new Error('Expect data to be not undefined nor null');
+      throw Boom.badData('Expect data to be not undefined nor null');
     }
     if (Array.isArray(data)) {
       return data.map(_serializeSingleRoleUser);

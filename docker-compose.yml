@@ -1,17 +1,21 @@
-version: '3'
-
 services:
-
-  postgres:
-    image: postgres
-    restart: always
-
-  mongo:
-    image: mongo
-    restart: always
+  api:
+    build: .
+    container_name: vetinhouse-backend
     ports:
-      - "27017:27017"
+      - "${PORT}:${PORT}"  # Mismo puerto dentro y fuera
+    volumes:
+      - .:/app  # WORKDIR es /app ahora
+      - /app/node_modules  # Evita sobrescribir node_modules del contenedor
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: test
+      PORT: ${PORT}
+      SUPPORTED_DATABASE: ${SUPPORTED_DATABASE}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_DIALECT: ${DATABASE_DIALECT}
+      DATABASE_URI: ${DATABASE_URI}
+    env_file:
+      - .env  # Carga automáticamente todas las variables
+    tty: true  # Habilita TTY para logs en tiempo real
+    stdin_open: true
+    restart: unless-stopped
+    command: npm run dev  # Puedes sobrescribir el CMD aquí también

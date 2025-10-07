@@ -13,7 +13,7 @@ export default {
         handler: HelloController.sayHelloWorld,
         options: {
           description: 'Return "Hello world!"',
-          tags: ['api'],
+          tags: ['api', 'Hello'],
         },
       },
       {
@@ -22,7 +22,7 @@ export default {
         handler: HelloController.sayHelloPerson,
         options: {
           description: 'Return "Hello {name}!"',
-          tags: ['api'],
+          tags: ['api', 'Hello'],
           validate: {
             params: Joi.object({
               name: Joi.string().required().description('Name to say hello to')

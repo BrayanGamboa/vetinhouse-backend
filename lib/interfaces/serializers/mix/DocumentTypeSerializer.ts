@@ -1,4 +1,5 @@
 import DocumentType from "../../../domain/mix/type_document/TypeDocument";
+import Boom from "@hapi/boom";
 
 const _serializeSingleRoleUser = (documentType: DocumentType) => {
   return {
@@ -15,7 +16,7 @@ const _serializeSingleRoleUser = (documentType: DocumentType) => {
 export default class {
   serialize(data: DocumentType) {
     if (!data) {
-      throw new Error('Expect data to be not undefined nor null');
+      throw Boom.badData('Expect data to be not undefined nor null');
     }
     if (Array.isArray(data)) {
       return data.map(_serializeSingleRoleUser);

@@ -1,9 +1,9 @@
 import ServiceRepository from "../../../../domain/services/service/ServiceRepository";
 import Boom from '@hapi/boom';
 
-export default async (documentTypeId: number, { serviceRepository }: { serviceRepository: ServiceRepository}) => {
-  if(!(await serviceRepository.getByFilter({id: documentTypeId})))
-    throw Boom.notFound('Document type not found');
+export default async (serviceId: number, { serviceRepository }: { serviceRepository: ServiceRepository}) => {
+  if(!(await serviceRepository.getByFilter({id: serviceId})))
+    throw Boom.notFound('Service not found');
   
-  return await serviceRepository.remove(documentTypeId);
+  return await serviceRepository.remove(serviceId);
 };

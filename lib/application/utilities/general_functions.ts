@@ -61,7 +61,7 @@ export interface InfoResponse {
   updated_at: string;
 };
 
-export interface ScheduleResponse {
+export interface ScheduleSchema {
   open_permanently: boolean;
   monday: [
     { start: number, finish: number }

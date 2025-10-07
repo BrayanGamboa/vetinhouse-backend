@@ -41,11 +41,32 @@ const createServer = async () => {
           version: Package.version,
         },
         responses: CommonErrorResponses,
-        // tags: [
-        //   { name: 'Document type', description: 'Operations about document types' },
-        //   { name: 'Role user', description: 'Operations about user roles' },
-        //   { name: 'Users', description: 'Authentication endpoints' },
-        // ]
+        grouping: 'tags',
+        sortEndpoints: 'ordered',
+
+        // Definición de tags con descripciones (opcional pero recomendado)
+        tags: [
+          {
+            name: 'Document type',
+            description: 'Operations about document types (CC, TI, Pasaporte, etc.)'
+          },
+          {
+            name: 'Role user',
+            description: 'In this module you can manage the roles assigned to users'
+          },
+          {
+            name: 'Users',
+            description: 'Management of users who can access the system'
+          },
+          {
+            name: 'Services',
+            description: 'Services available in the system'
+          },
+          {
+            name: 'Hello',
+            description: 'Health check and test endpoints'
+          }
+        ],
       },
     },
     {
@@ -72,7 +93,8 @@ const createServer = async () => {
     require('../../interfaces/routes/auth/user').default,
     require('../../interfaces/routes/auth/role_user').default,
     require('../../interfaces/routes/mix/document_type').default,
-    require('../../interfaces/routes/services/services').default
+    require('../../interfaces/routes/services/services').default,
+    require('../../interfaces/routes/services/services_schedule').default
   ]);
   /* eslint-enable */
   server.app.serviceLocator = buildBeans();

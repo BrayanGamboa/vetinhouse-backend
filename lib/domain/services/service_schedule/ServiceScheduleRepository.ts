@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Service from "./Service";
+import ServiceSchedule from "./ServiceSchedule";
 import Boom from "@hapi/boom";
 
 export default class {
 
-  persist(domainService: Service): Promise<Service> {
+  persist(domainServiceSchedule: ServiceSchedule): Promise<ServiceSchedule> {
     throw Boom.notImplemented('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  update(serviceId: number, fields: any): Promise<Service> {
+  update(servicesScheduleId: number, fields: any): Promise<ServiceSchedule> {
     throw Boom.notImplemented('ERR_METHOD_NOT_IMPLEMENTED');
   }
 
-  remove(serviceId: number): Promise<Service> {
+  remove(servicesScheduleId: number): Promise<ServiceSchedule> {
     throw Boom.notImplemented('ERR_METHOD_NOT_IMPLEMENTED');
   }
 

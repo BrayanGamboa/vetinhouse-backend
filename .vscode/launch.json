@@ -9,6 +9,13 @@
       "args": ["${workspaceFolder}/index.ts"],
       "cwd": "${workspaceFolder}",
       "protocol": "inspector"
+    },
+    {
+      "name": "Containers: Node.js Launch",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: debug",
+      "platform": "node"
     }
   ]
 }

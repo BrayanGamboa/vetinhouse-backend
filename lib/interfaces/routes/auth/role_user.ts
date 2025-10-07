@@ -75,7 +75,7 @@ export default {
         handler: RoleUsersController.deleteRoleUser,
         options: {
           description: 'Delete a role user',
-          tags: ['api'],
+          tags: ['api', 'Role user'],
         },
       },
     ]);

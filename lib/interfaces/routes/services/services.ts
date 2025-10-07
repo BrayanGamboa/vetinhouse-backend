@@ -17,7 +17,7 @@ export default {
         handler: ServiceController.findServices,
         options: {
           description: 'List all services',
-          tags: ['Document type', 'api'],
+          tags: ['api', 'Service'],
           response: {
             status: {
               200: ServiceListResponseSchema,
@@ -34,7 +34,7 @@ export default {
         handler: ServiceController.createService,
         options: {
           description: 'Create a service',
-          tags: ['Document type', 'api'],
+          tags: ['api', 'Service'],
           validate: {
             payload: ServicePayloadSchema
           },
