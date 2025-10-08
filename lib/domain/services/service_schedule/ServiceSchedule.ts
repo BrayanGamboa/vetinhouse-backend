@@ -1,28 +1,28 @@
-import { InfoResponse } from '../../../application/utilities/general_functions';
+import { InfoResponse, ScheduleSchema } from '../../../application/utilities/general_functions';
 
-export default class Service {
+export default class ServiceSchedule {
   id: number;
   name: string;
-  schedule: JSON | null;
-  info: InfoResponse | null;
+  schedule: ScheduleSchema;
+  info: InfoResponse;
 
   constructor();
   constructor(
     id: number,
     name: string,
-    schedule: JSON,
+    schedule: ScheduleSchema,
     info: InfoResponse,
   );
 
   constructor(
     id?: number,
     name?: string,
-    schedule?: JSON,
+    schedule?: ScheduleSchema,
     info?: InfoResponse,
   ) {
     this.id = id ?? 0;
-    this.name = name ?? '';
-    this.schedule = schedule ?? null;
-    this.info = info ?? null;
+    this.name = name ?? "";
+    this.schedule = schedule ?? {} as ScheduleSchema;
+    this.info = info ?? {} as InfoResponse;
   }
 }

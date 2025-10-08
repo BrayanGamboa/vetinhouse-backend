@@ -12,7 +12,7 @@ export default {
       const serviceLocator = request.server.app.serviceLocator;
 
       // Input
-      const { id, name, schedule } = request.payload as { id: number, name: string; schedule: JSON };
+      const { id, name, schedule } = request.payload as { id: number, name: string; schedule: ScheduleSchema };
 
       // Treatment
       const service = await CreateServiceSchedule(id, name, schedule, serviceLocator);
@@ -33,11 +33,10 @@ export default {
       const serviceLocator = request.server.app.serviceLocator;
 
       // Treatment
-      const service = await ListScheduleService(serviceLocator);
+      const serviceSchedule = await ListScheduleService(serviceLocator);
 
-      // Output
-      return service.map(serviceLocator.serviceScheduleSerializer.serialize);
-      
+      // Output   
+      return serviceSchedule.map(item => serviceLocator.serviceScheduleSerializer.serialize(item));
     } catch (err) {
       console.error(err);
       if (Boom.isBoom(err)) {

@@ -6,7 +6,7 @@ import { ScheduleSchema } from "../../../utilities/general_functions";
 export default async (
   id: number,
   name: string,
-  schedule: JSON,
+  schedule: ScheduleSchema,
   { serviceScheduleRepository }: { serviceScheduleRepository: ServiceScheduleRepository }
 ) => {
 

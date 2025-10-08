@@ -61,27 +61,22 @@ export interface InfoResponse {
   updated_at: string;
 };
 
+interface TimeSlot {
+  start: number;  
+  finish: number;
+}
+
 export interface ScheduleSchema {
-  open_permanently: boolean;
-  monday: [
-    { start: number, finish: number }
-  ];
-  tuesday: [
-    { start: number, finish: number }
-  ];
-  wednesday: [
-    { start: number, finish: number }
-  ];
-  thursday: [
-    { start: number, finish: number }
-  ];
-  friday: [
-    { start: number, finish: number }
-  ];
-  saturday: [
-    { start: number, finish: number }
-  ];
-  sunday: [
-    { start: number, finish: number }
-  ];
-};
+  openAllTime: boolean;
+  monday?: TimeSlot[];
+  tuesday?: TimeSlot[];
+  wednesday?: TimeSlot[];
+  thursday?: TimeSlot[];
+  friday?: TimeSlot[];
+  saturday?: TimeSlot[];
+  sunday?: TimeSlot[];
+}
+
+type DayType = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export const DAYS: DayType[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
